@@ -7,7 +7,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your applicati
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,27 +23,74 @@ class IniciarSesion extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Pagina para Iniciar Sesion",
-          style: TextStyle(fontSize: 30),
+        title: const Text(
+          "Iniciar Sesión",
+          style: TextStyle(fontSize: 45, color: Color(0xFF328535)),
         ),
         centerTitle: true,
+        elevation: 0,
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "¡Bienvenido a BANK TRUST!", //Nomas para probar
-              style: Theme.of(context).textTheme.headlineSmall,
+          children: [
+            const SizedBox(height: 20), // Separación debajo del título
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Inicia sesión para continuar",
+                style: TextStyle(fontSize: 18),
+              ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                //Falta para irse a home
-              },
-              child: Text("Ingresar y ver el Icono de Brayan la Cabra"),
+            const SizedBox(height: 30),
+
+            // Número de cuenta
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text("NÚMERO DE CUENTA", style: TextStyle(fontSize: 20)),
             ),
+            const SizedBox(height: 5),
+            const TextField(
+              decoration: InputDecoration(
+                labelText: "Ingrese su número",
+                border: OutlineInputBorder(),
+                filled: true, // <- activa el fondo
+                fillColor: Color(
+                  0xFFcce1c6,
+                ),
+              ),
+            ),
+            const SizedBox(height: 25),
+
+            // Contraseña
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text("CONTRASEÑA", style: TextStyle(fontSize: 20)),
+            ),
+            const SizedBox(height: 5),
+            const TextField(
+              decoration: InputDecoration(
+                labelText: "Ingrese su contrasema",
+                border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Color(
+                  0xFFcce1c6,
+                ),
+              ),
+            ),
+
+            const Spacer(), // para mandar el botón hacia abajo
+
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  // Falta la de inisicar sesion
+                },
+                child: const Text("Ingresar y ver el Icono de Brayan la Cabra"),
+              ),
+            ),
+            const SizedBox(height: 20), // espacio de abajo
           ],
         ),
       ),
