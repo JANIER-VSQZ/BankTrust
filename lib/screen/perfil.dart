@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import './splashscreen.dart';
+import 'package:banktrust/main.dart';
 
 class Perfil extends StatefulWidget {
   const Perfil({super.key});
@@ -54,9 +54,10 @@ class _PerfilState extends State<Perfil> {
             case 3:
               break;
             case 4:
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => const SplashScreen()),
+                MaterialPageRoute(builder: (context) => const IniciarSesion()),
+                (Route<dynamic> route) => false, 
               );
               break;
           }
