@@ -42,6 +42,7 @@ class _CrearCuentaState extends State<CrearCuenta> {
     return Scaffold(
       backgroundColor: Color(0xFFFEF7FF),
       appBar: AppBar(
+        toolbarHeight: 120,
         title: Text(
           "Crear Cuenta",
           style: GoogleFonts.poppins (fontSize: 45, color: Color(0xFF328535)),

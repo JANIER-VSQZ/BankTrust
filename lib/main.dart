@@ -35,7 +35,7 @@ class IniciarSesion extends StatelessWidget {
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFFFEF7FF),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
