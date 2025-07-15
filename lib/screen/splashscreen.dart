@@ -8,7 +8,7 @@ class SplashScreen extends StatefulWidget {
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
-
+//28
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Image.asset(
           'assets/images/logo.png',
           width: 500,
-          height: 500,
+          height: 500,//2003
           fit: BoxFit.contain,
         ),
       ),
