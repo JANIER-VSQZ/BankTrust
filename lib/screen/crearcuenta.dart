@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CrearCuenta extends StatefulWidget {
-  const CrearCuenta({Key? key}) : super(key: key);
+  const CrearCuenta({super.key});
 
   @override
   State<CrearCuenta> createState() => _CrearCuentaState();
