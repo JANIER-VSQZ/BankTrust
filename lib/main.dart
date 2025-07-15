@@ -1,3 +1,4 @@
+import 'package:banktrust/screen/recuperarcontrasena.dart';
 import 'package:banktrust/screen/splashscreen.dart';
 import 'package:flutter/material.dart';
 import './screen/crearcuenta.dart';
@@ -13,26 +14,62 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen());
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
+    );
   }
 }
 
-class IniciarSesion extends StatelessWidget {
+class IniciarSesion extends StatefulWidget {
   const IniciarSesion({Key? key}) : super(key: key);
+
+  @override
+  State<IniciarSesion> createState() => _IniciarSesionState();
+}
+
+class _IniciarSesionState extends State<IniciarSesion> {
+  final TextEditingController cuentaController = TextEditingController();
+  final TextEditingController contrasenaController = TextEditingController();
+
+  void validarInicioSesion() {
+    final cuenta = cuentaController.text.trim();
+    final contrasena = contrasenaController.text.trim();
+
+    if (cuenta.isEmpty || contrasena.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor complete todos los campos')),
+      );
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Inicio de sesión exitoso')));
+
+      Future.delayed(const Duration(seconds: 0), () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Perfil()),
+        );
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFEF7FF),
+      backgroundColor: const Color(0xFFFEF7FF),
       appBar: AppBar(
         toolbarHeight: 120,
         title: Text(
           "Iniciar Sesión",
-          style: GoogleFonts.poppins(fontSize: 45, color: Color(0xFF328535)),
+          style: GoogleFonts.poppins(
+            fontSize: 45,
+            color: const Color(0xFF328535),
+          ),
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Color(0xFFFEF7FF),
+        backgroundColor: const Color(0xFFFEF7FF),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -47,7 +84,6 @@ class IniciarSesion extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 80),
-
             SizedBox(
               width: 350,
               child: Column(
@@ -58,8 +94,9 @@ class IniciarSesion extends StatelessWidget {
                     style: TextStyle(fontSize: 20),
                   ),
                   const SizedBox(height: 5),
-                  const TextField(
-                    decoration: InputDecoration(
+                  TextField(
+                    controller: cuentaController,
+                    decoration: const InputDecoration(
                       labelText: "Ingrese su número",
                       border: OutlineInputBorder(),
                       filled: true,
@@ -67,12 +104,12 @@ class IniciarSesion extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 25),
-
                   const Text("CONTRASEÑA", style: TextStyle(fontSize: 20)),
                   const SizedBox(height: 5),
-                  const TextField(
+                  TextField(
+                    controller: contrasenaController,
                     obscureText: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Ingrese su contraseña",
                       border: OutlineInputBorder(),
                       filled: true,
@@ -80,13 +117,19 @@ class IniciarSesion extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 30),
-
                   Center(
                     child: Column(
                       children: [
                         TextButton(
                           onPressed: () {
-                            // Falta
+                            String cuenta = cuentaController.text.trim();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    RecuperarContrasena(cuenta: cuenta),
+                              ),
+                            );
                           },
                           child: const Text(
                             "¿Olvidó la Contraseña?",
@@ -112,19 +155,11 @@ class IniciarSesion extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 50),
-
                   Center(
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Perfil(),
-                          ),
-                        );
-                      },
+                      onPressed: validarInicioSesion,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF27662A),
+                        backgroundColor: const Color(0xFF27662A),
                         foregroundColor: Colors.white,
                         textStyle: const TextStyle(fontSize: 20),
                         padding: const EdgeInsets.symmetric(
@@ -138,7 +173,6 @@ class IniciarSesion extends StatelessWidget {
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
           ],
         ),
