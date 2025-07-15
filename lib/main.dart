@@ -1,3 +1,4 @@
+import 'package:banktrust/screen/splashscreen.dart';
 import 'package:flutter/material.dart';
 import './screen/crearcuenta.dart';
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: IniciarSesion(),
+      home: SplashScreen(),
     );
   }
 }
