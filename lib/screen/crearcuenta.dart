@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CrearCuenta extends StatefulWidget {
   const CrearCuenta({Key? key}) : super(key: key);
@@ -36,15 +37,18 @@ class _CrearCuentaState extends State<CrearCuenta> {
 
   @override
   Widget build(BuildContext context) {
+    
+
     return Scaffold(
+      backgroundColor: Color(0xFFFEF7FF),
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Crear Cuenta",
-          style: TextStyle(fontSize: 45, color: Color(0xFF328535)),
+          style: GoogleFonts.poppins (fontSize: 45, color: Color(0xFF328535)),
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFFFEF7FF),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),

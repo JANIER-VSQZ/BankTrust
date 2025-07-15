@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './screen/crearcuenta.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,15 +23,20 @@ class IniciarSesion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
+      backgroundColor: Color(0xFFFEF7FF),
       appBar: AppBar(
-        title: const Text(
-          "Iniciar Sesión",
-          style: TextStyle(fontSize: 45, color: Color(0xFF328535)),
-        ),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.white,
+        title: Text(
+    "Iniciar Sesión",
+    style: GoogleFonts.poppins(
+      fontSize: 45,
+      color: Color(0xFF328535),
+    ),
+  ),
+  centerTitle: true,
+  elevation: 0,
+  backgroundColor: Color(0xFFFEF7FF),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
