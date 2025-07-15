@@ -1,3 +1,4 @@
+import 'package:banktrust/screen/splashscreen.dart';
 import 'package:flutter/material.dart';
 import './screen/crearcuenta.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: IniciarSesion(),
+      home: SplashScreen(),
     );
   }
 }
@@ -27,16 +28,14 @@ class IniciarSesion extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xFFFEF7FF),
       appBar: AppBar(
+        toolbarHeight: 120,
         title: Text(
-    "Iniciar Sesión",
-    style: GoogleFonts.poppins(
-      fontSize: 45,
-      color: Color(0xFF328535),
-    ),
-  ),
-  centerTitle: true,
-  elevation: 0,
-  backgroundColor: Color(0xFFFEF7FF),
+          "Iniciar Sesión",
+          style: GoogleFonts.poppins(fontSize: 45, color: Color(0xFF328535)),
+        ),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
