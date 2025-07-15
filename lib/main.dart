@@ -25,6 +25,8 @@ class IniciarSesion extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        //cambiar valor toolbarHeight para reducir tamaño de appBar
+        toolbarHeight: 120,
         title: const Text(
           "Iniciar Sesión",
           style: TextStyle(fontSize: 45, color: Color(0xFF328535)),
