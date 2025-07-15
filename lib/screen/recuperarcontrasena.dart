@@ -19,7 +19,7 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
     super.initState();
     cuentaController = TextEditingController(text: widget.cuenta);
   }
-
+//r
   void recuperarContrasena() {
     String cuenta = cuentaController.text;
     String contrasena = contrasenaController.text;
@@ -47,13 +47,13 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
           style: GoogleFonts.poppins(
             fontSize: 44,
             color: const Color(0xFF328535),
-          ),
+          ),//i
           textAlign: TextAlign.center,
         ),
         centerTitle: true,
         elevation: 0,
         backgroundColor: const Color(0xFFFEF7FF),
-      ),
+      ),// 28
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Center(
@@ -93,7 +93,7 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
                     filled: true,
                     fillColor: Color(0xFFcce1c6),
                   ),
-                ),
+                ),//2003
                 const SizedBox(height: 40),
                 Center(
                   child: ElevatedButton(
@@ -113,8 +113,8 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
               ],
             ),
           ),
-        ),
+        ),//c
       ),
     );
-  }
+  }//k
 }
