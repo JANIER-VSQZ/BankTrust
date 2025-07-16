@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import './splashscreen.dart';
+import './transferencias.dart';
 
 class Perfil extends StatefulWidget {
   const Perfil({super.key});
@@ -47,6 +48,13 @@ class _PerfilState extends State<Perfil> {
             case 0:
               break;
             case 1:
+              const cuenta = '1231';
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Transferencias(cuenta: cuenta),
+                ),
+              );
               break;
             case 2:
               // Perfil (actual)
