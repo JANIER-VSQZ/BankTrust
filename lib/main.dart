@@ -49,7 +49,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Perfil()),
-        );
+        );//r
       });
     }
   }
@@ -61,14 +61,14 @@ class _IniciarSesionState extends State<IniciarSesion> {
       appBar: AppBar(
         toolbarHeight: 120,
         title: Text(
-          "Iniciar Sesión",
+          "Iniciar Sesión",//i
           style: GoogleFonts.poppins(
             fontSize: 45,
             color: const Color(0xFF328535),
           ),
         ),
         centerTitle: true,
-        elevation: 0,
+        elevation: 0,//c
         backgroundColor: const Color(0xFFFEF7FF),
       ),
       body: Padding(
@@ -82,7 +82,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                 "Inicia sesión para continuar",
                 style: TextStyle(fontSize: 18),
               ),
-            ),
+            ),//k
             const SizedBox(height: 80),
             SizedBox(
               width: 350,
@@ -103,7 +103,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                       fillColor: Color(0xFFcce1c6),
                     ),
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 25),//28
                   const Text("CONTRASEÑA", style: TextStyle(fontSize: 20)),
                   const SizedBox(height: 5),
                   TextField(
@@ -116,7 +116,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                       fillColor: Color(0xFFcce1c6),
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 30),//2003
                   Center(
                     child: Column(
                       children: [
