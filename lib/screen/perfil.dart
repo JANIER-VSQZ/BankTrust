@@ -162,9 +162,10 @@ class _PerfilState extends State<Perfil> {
             case 3:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      historialmovimientos()
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => historialmovimientos(),
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
                 ),
               );
               break;

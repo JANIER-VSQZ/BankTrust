@@ -48,22 +48,23 @@ class HistorialmovimientosState extends State<historialmovimientos> {
 
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
-  int _paginaActual = 2;
+  int _paginaActual = 3;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 120,
+        backgroundColor: const Color(0xFF328535),
+        automaticallyImplyLeading: false,
         title: Text(
-          "Historial",
+          "HISTORIAL",
           style: GoogleFonts.poppins(
-            fontSize: 45,
-            color: const Color(0xFF328535),
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: const Color(0xFFFEF7FF),
       ),
       body: cuerpo(),
       bottomNavigationBar: CurvedNavigationBar(
@@ -96,7 +97,11 @@ class HistorialmovimientosState extends State<historialmovimientos> {
             case 2:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => Perfil()),
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => Perfil(),
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                ),
               );
               break;
             case 3:
