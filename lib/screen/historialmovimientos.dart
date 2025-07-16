@@ -51,75 +51,83 @@ class HistorialmovimientosState extends State<historialmovimientos> {
   int _paginaActual = 3;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF328535),
-        automaticallyImplyLeading: false,
-        title: Text(
-          "HISTORIAL",
-          style: GoogleFonts.poppins(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+  return Scaffold(
+    backgroundColor: const Color(0xFFFEF7FF),
+    body: Column(
+      children: [
+        // Encabezado estilo perfil
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          color: const Color(0xFF328535),
+          child: const Center(
+            child: Text(
+              'HISTORIAL',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
-        centerTitle: true,
-        elevation: 0,
-      ),
-      body: cuerpo(),
-      bottomNavigationBar: CurvedNavigationBar(
-        key: _bottomNavigationKey,
-        height: 60,
-        backgroundColor: const Color(0xFFFEF7FF),
-        color: const Color(0xFF328535),
-        buttonBackgroundColor: const Color(0xFF55A14E),
-        animationCurve: Curves.easeInOut,
-        animationDuration: const Duration(milliseconds: 300),
-        index: _paginaActual,
-        items: const <Widget>[
-          Icon(Icons.payment, size: 30, color: Colors.white),
-          Icon(Icons.swap_horiz, size: 30, color: Colors.white),
-          Icon(Icons.person, size: 30, color: Colors.white),
-          Icon(Icons.history, size: 30, color: Colors.white),
-          Icon(Icons.logout, size: 30, color: Colors.white),
-        ],
-        onTap: (index) {
-          setState(() {
-            _paginaActual = index;
-          });
+        const SizedBox(height: 10),
+        Expanded(child: cuerpo()),
+      ],
+    ),
+    bottomNavigationBar: CurvedNavigationBar(
+      key: _bottomNavigationKey,
+      height: 60,
+      backgroundColor: const Color(0xFFFEF7FF),
+      color: const Color(0xFF328535),
+      buttonBackgroundColor: const Color(0xFF55A14E),
+      animationCurve: Curves.easeInOut,
+      animationDuration: const Duration(milliseconds: 300),
+      index: _paginaActual,
+      items: const <Widget>[
+        Icon(Icons.payment, size: 30, color: Colors.white),
+        Icon(Icons.swap_horiz, size: 30, color: Colors.white),
+        Icon(Icons.person, size: 30, color: Colors.white),
+        Icon(Icons.history, size: 30, color: Colors.white),
+        Icon(Icons.logout, size: 30, color: Colors.white),
+      ],
+      onTap: (index) {
+        setState(() {
+          _paginaActual = index;
+        });
 
-          // Navegación futura
-          switch (index) {
-            case 0:
-              break;
-            case 1:
-              break;
-            case 2:
-              Navigator.pushReplacement(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => Perfil(),
-                  transitionDuration: Duration.zero,
-                  reverseTransitionDuration: Duration.zero,
-                ),
-              );
-              break;
-            case 3:
-              //hitorial pagina actual
-              break;
-            case 4:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => RecuperarContrasena(cuenta: "123"),
-                ),
-              );
-              break;
-          }
-        },
-      ),
-    );
-  }
+        switch (index) {
+          case 0:
+            break;
+          case 1:
+            break;
+          case 2:
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const Perfil(),
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero,
+              ),
+            );
+            break;
+          case 3:
+            break;
+          case 4:
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    RecuperarContrasena(cuenta: "123"),
+              ),
+            );
+            break;
+        }
+      },
+    ),
+  );
+}
+
 
   Widget cuerpo() {
         return Column(
