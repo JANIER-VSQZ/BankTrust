@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:banktrust/main.dart';
+import 'package:banktrust/screen/recuperarcontrasena.dart';
 
 class Usuario {
   final String nombre;
   final String cuenta;
   final double saldo;
 
-  Usuario({
-    required this.nombre,
-    required this.cuenta,
-    required this.saldo,
-  });
+  Usuario({required this.nombre, required this.cuenta, required this.saldo});
 }
 
 class Perfil extends StatefulWidget {
@@ -108,7 +105,8 @@ class _PerfilState extends State<Perfil> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => RecuperarContrasena(cuenta: usuario.cuenta),
+                    builder: (context) =>
+                        RecuperarContrasena(cuenta: usuario.cuenta),
                   ),
                 );
               },
@@ -158,7 +156,10 @@ class _PerfilState extends State<Perfil> {
             case 4:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const SplashScreen()),
+                MaterialPageRoute(
+                  builder: (context) =>
+                      RecuperarContrasena(cuenta: usuario.cuenta),
+                ),
               );
               break;
           }
