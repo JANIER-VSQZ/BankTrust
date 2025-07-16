@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:banktrust/main.dart';
+import 'package:banktrust/screen/recuperarcontrasena.dart';
 
 class Usuario {
   final String nombre;
   final String cuenta;
   final double saldo;
 
-  Usuario({
-    required this.nombre,
-    required this.cuenta,
-    required this.saldo,
-  });
+  Usuario({required this.nombre, required this.cuenta, required this.saldo});
 }
 
 class Perfil extends StatefulWidget {
@@ -72,10 +69,7 @@ class _PerfilState extends State<Perfil> {
             const SizedBox(height: 5),
             Text(
               usuario.cuenta,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black54,
-              ),
+              style: const TextStyle(fontSize: 16, color: Colors.black54),
             ),
             const SizedBox(height: 30),
             const Padding(
@@ -102,13 +96,18 @@ class _PerfilState extends State<Perfil> {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: Color.fromARGB(255, 222, 222, 222),
                 ),
               ),
             ),
             TextButton(
               onPressed: () {
-                // va ir acción para cambiar contraseña
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RecuperarContrasena(cuenta: usuario.cuenta),
+                  ),
+                );
               },
               child: const Text(
                 'Cambiar contraseña',
