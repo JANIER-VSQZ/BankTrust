@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:banktrust/screen/historialmovimientos.dart';
+import 'package:banktrust/screen/perfil.dart';
 
 class Transferencias extends StatefulWidget {
   final String cuenta;
@@ -11,9 +14,13 @@ class Transferencias extends StatefulWidget {
 }
 
 class _TransferenciasState extends State<Transferencias> {
+  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+  int _paginaActual = 1;
+
   late TextEditingController cuentaOrigen = TextEditingController(
     text: widget.cuenta,
   );
+
   late TextEditingController cuentaDestino = TextEditingController();
   late TextEditingController monto = TextEditingController();
   late TextEditingController concepto = TextEditingController();
@@ -22,6 +29,11 @@ class _TransferenciasState extends State<Transferencias> {
   void initState() {
     super.initState();
     cuentaDestino = TextEditingController(text: widget.cuenta);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final navBarState = _bottomNavigationKey.currentState;
+      navBarState?.setPage(1); // or any other index you want
+    });
   }
 
   void mtd_transferencia() {
@@ -55,22 +67,6 @@ class _TransferenciasState extends State<Transferencias> {
     }
   }
 
-  // void recuperarContrasena() {
-  //   String cuenta = cuentaController.text;
-  //   String contrasena = contrasenaController.text;
-
-  //   if (cuenta.isNotEmpty && contrasena.isNotEmpty) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text('Contraseña cambiada exitosamente')),
-  //     );
-  //     Navigator.pop(context);
-  //   } else {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text('Por favor complete todos los campos')),
-  //     );
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,13 +93,6 @@ class _TransferenciasState extends State<Transferencias> {
             child: ListView(
               children: [
                 const SizedBox(height: 20),
-                // const Align(
-                //   alignment: Alignment.center,
-                //   child: Text(
-                //     "Nueva contraseña",
-                //     style: TextStyle(fontSize: 18),
-                //   ),
-                // ),
                 const SizedBox(height: 40),
                 const Text("CUENTA DE ORIGEN:", style: TextStyle(fontSize: 20)),
                 const SizedBox(height: 5),
@@ -175,13 +164,84 @@ class _TransferenciasState extends State<Transferencias> {
                         vertical: 15,
                       ),
                     ),
-                    child: const Text("Cambiar Contraseña"),
+                    child: const Text("Realizar transacción"),
                   ),
                 ),
               ],
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: CurvedNavigationBar(
+        key: _bottomNavigationKey,
+        height: 60,
+        backgroundColor: const Color(0xFFFEF7FF),
+        color: const Color(0xFF328535),
+        buttonBackgroundColor: const Color(0xFF55A14E),
+        animationCurve: Curves.easeInOut,
+        animationDuration: const Duration(milliseconds: 300),
+        index: _paginaActual,
+        items: const <Widget>[
+          Icon(Icons.payment, size: 30, color: Colors.white),
+          Icon(Icons.swap_horiz, size: 30, color: Colors.white),
+          Icon(Icons.person, size: 30, color: Colors.white),
+          Icon(Icons.history, size: 30, color: Colors.white),
+          Icon(Icons.logout, size: 30, color: Colors.white),
+        ],
+        onTap: (index) {
+          setState(() {
+            _paginaActual = index;
+          });
+
+          // Navegación futura
+          switch (index) {
+            case 0:
+              break;
+            case 1:
+              break;
+            case 2:
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => Perfil()),
+              // );
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => Perfil(),
+                  transitionDuration: const Duration(seconds: 1),
+                  reverseTransitionDuration: Duration.zero,
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                ),
+              );
+              break;
+            case 3:
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => historialmovimientos(),
+                  transitionDuration: const Duration(seconds: 1),
+                  reverseTransitionDuration: Duration.zero,
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                ),
+              );
+              break;
+            case 4:
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) =>
+              //         RecuperarContrasena(cuenta: usuario.cuenta),
+              //   ),
+              // );
+              break;
+          }
+        },
       ),
     );
   }
