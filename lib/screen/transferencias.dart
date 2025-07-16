@@ -11,13 +11,48 @@ class Transferencias extends StatefulWidget {
 }
 
 class _TransferenciasState extends State<Transferencias> {
-  late TextEditingController cuentaController;
-  final TextEditingController contrasenaController = TextEditingController();
+  late TextEditingController cuentaOrigen = TextEditingController(
+    text: widget.cuenta,
+  );
+  late TextEditingController cuentaDestino = TextEditingController();
+  late TextEditingController monto = TextEditingController();
+  late TextEditingController concepto = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    cuentaController = TextEditingController(text: widget.cuenta);
+    cuentaDestino = TextEditingController(text: widget.cuenta);
+  }
+
+  void mtd_transferencia() {
+    String vrCuentaDestino = cuentaDestino.text;
+    String vrMonto = monto.text;
+    String vrConcepto = concepto.text;
+
+    if (vrCuentaDestino.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor escriba la cuenta de destino')),
+      );
+    } else if (vrMonto.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Por favor escriba el monto a transferir'),
+        ),
+      );
+    } else if (vrConcepto.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Por favor escriba un pequeño concepto para la transacción',
+          ),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('La transferencia ha sido exitosa!')),
+      );
+      Navigator.pop(context);
+    }
   }
 
   // void recuperarContrasena() {
@@ -73,9 +108,9 @@ class _TransferenciasState extends State<Transferencias> {
                 const Text("CUENTA DE ORIGEN:", style: TextStyle(fontSize: 20)),
                 const SizedBox(height: 5),
                 TextField(
-                  controller: cuentaController,
+                  controller: cuentaOrigen,
                   decoration: const InputDecoration(
-                    labelText: "123123123123",
+                    // labelText: "Cuenta de origen",
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color(0xFFcce1c6),
@@ -88,7 +123,7 @@ class _TransferenciasState extends State<Transferencias> {
                 ),
                 const SizedBox(height: 5),
                 TextField(
-                  controller: contrasenaController,
+                  controller: cuentaDestino,
                   obscureText: true,
                   decoration: const InputDecoration(
                     labelText: "Escriba aquí la cuenta de destino",
@@ -104,7 +139,7 @@ class _TransferenciasState extends State<Transferencias> {
                 ),
                 const SizedBox(height: 5),
                 TextField(
-                  controller: contrasenaController,
+                  controller: monto,
                   obscureText: true,
                   decoration: const InputDecoration(
                     labelText: "Escriba aquí el monto que desea transferir",
@@ -117,7 +152,7 @@ class _TransferenciasState extends State<Transferencias> {
                 const Text("CONCEPTO:", style: TextStyle(fontSize: 20)),
                 const SizedBox(height: 5),
                 TextField(
-                  controller: contrasenaController,
+                  controller: concepto,
                   obscureText: true,
                   decoration: const InputDecoration(
                     labelText:
@@ -125,6 +160,22 @@ class _TransferenciasState extends State<Transferencias> {
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color(0xFFcce1c6),
+                  ),
+                ),
+                const SizedBox(height: 40),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: mtd_transferencia,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF27662A),
+                      foregroundColor: Colors.white,
+                      textStyle: const TextStyle(fontSize: 20),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                    ),
+                    child: const Text("Cambiar Contraseña"),
                   ),
                 ),
               ],
