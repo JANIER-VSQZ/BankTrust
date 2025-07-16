@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:banktrust/main.dart';
 import 'package:banktrust/screen/recuperarcontrasena.dart';
+import 'package:banktrust/screen/transferencias.dart';
 
 class Usuario {
   final String nombre;
@@ -147,6 +148,13 @@ class _PerfilState extends State<Perfil> {
             case 0:
               break;
             case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      RecuperarContrasena(cuenta: usuario.cuenta),
+                ),
+              );
               break;
             case 2:
               // Perfil (actual)
