@@ -151,8 +151,7 @@ class _PerfilState extends State<Perfil> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      RecuperarContrasena(cuenta: usuario.cuenta),
+                  builder: (context) => Transferencias(cuenta: usuario.cuenta),
                 ),
               );
               break;
