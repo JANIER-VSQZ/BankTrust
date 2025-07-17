@@ -1,4 +1,5 @@
 import 'package:banktrust/screen/historialmovimientos.dart';
+import 'package:banktrust/screen/pagarservicios.dart';
 import 'package:banktrust/screen/perfil.dart';
 import 'package:banktrust/screen/recuperarcontrasena.dart';
 import 'package:banktrust/screen/transferencias.dart';
@@ -17,7 +18,7 @@ class _BarraMenuState extends State<Barramenu> {
   int _paginaActual = 2;
 
   final List<Widget> _paginas = [
-    RecuperarContrasena(cuenta: "123"),
+    Pagarservicios(),
     Transferencias(cuenta: "123"),
     Perfil(),
     Historialmovimientos(),
