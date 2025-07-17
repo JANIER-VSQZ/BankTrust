@@ -75,9 +75,7 @@ class _TransferenciasState extends State<Transferencias> {
         confirmado = await mtdOtraTransferencia(context);
         if (confirmado) {
           mtdLimpiarCampos();
-        } else {
-          Barramenu();
-        }
+        } else {}
 
         // Navigator.pop(context);
       } else {
