@@ -19,21 +19,52 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
     super.initState();
     cuentaController = TextEditingController(text: widget.cuenta);
   }
-//r
-  void recuperarContrasena() {
+
+  //r
+  void recuperarContrasena() async {
     String cuenta = cuentaController.text;
     String contrasena = contrasenaController.text;
 
     if (cuenta.isNotEmpty && contrasena.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Contraseña cambiada exitosamente')),
-      );
-      Navigator.pop(context);
+      bool confirmado = await confirmarCambioContrasena(context);
+      if (confirmado) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Contraseña cambiada exitosamente')),
+        );
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Operación cancelada')));
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Por favor complete todos los campos')),
       );
     }
+  }
+
+  Future<bool> confirmarCambioContrasena(BuildContext context) async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Confirmación'),
+            content: const Text(
+              '¿Está seguro que desea cambiar la contraseña de esta cuenta?',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('Sí'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
   }
 
   @override
@@ -47,13 +78,13 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
           style: GoogleFonts.poppins(
             fontSize: 44,
             color: const Color(0xFF328535),
-          ),//i
+          ), //i
           textAlign: TextAlign.center,
         ),
         centerTitle: true,
         elevation: 0,
         backgroundColor: const Color(0xFFFEF7FF),
-      ),// 28
+      ), // 28
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Center(
@@ -93,7 +124,7 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
                     filled: true,
                     fillColor: Color(0xFFcce1c6),
                   ),
-                ),//2003
+                ), //2003
                 const SizedBox(height: 40),
                 Center(
                   child: ElevatedButton(
@@ -113,8 +144,8 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
               ],
             ),
           ),
-        ),//c
+        ), //c
       ),
     );
-  }//k
+  } //k
 }

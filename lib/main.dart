@@ -83,7 +83,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                 "Inicia sesión para continuar",
                 style: TextStyle(fontSize: 18),
               ),
-            ),
+            ),//k
             const SizedBox(height: 80),
             SizedBox(
               width: 350,
@@ -149,7 +149,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                           },
                           child: const Text(
                             "Crear Cuenta",
-                            style: TextStyle(fontSize: 16, color: Colors.blue),
+                            style: TextStyle(fontSize: 16, color: Colors.blue),//28
                           ),
                         ),
                       ],
@@ -166,7 +166,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,
                           vertical: 15,
-                        ),
+                        ),//2003
                       ),
                       child: const Text("Iniciar Sesión"),
                     ),

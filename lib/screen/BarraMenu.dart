@@ -21,10 +21,37 @@ class _BarraMenuState extends State<Barramenu> {
     Transferencias(cuenta: "123"),
     Perfil(),
     Historialmovimientos(),
-    IniciarSesion(),
   ];
 
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+
+  Future<void> _confirmarCerrarSesion(BuildContext context) async {
+    final bool salir = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Confirmar salida"),
+            content: const Text("¿Estás seguro que deseas cerrar sesión?"),
+            actions: [
+              TextButton(
+                child: const Text("Cancelar"),
+                onPressed: () => Navigator.of(context).pop(false),
+              ),
+              TextButton(
+                child: const Text("Sí, salir"),
+                onPressed: () => Navigator.of(context).pop(true),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+
+    if (salir) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const IniciarSesion()),
+        (Route<dynamic> route) => false,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +75,7 @@ class _BarraMenuState extends State<Barramenu> {
         ],
         onTap: (index) {
           if (index == 4) {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => const IniciarSesion()),
-              (Route<dynamic> route) => false,
-            );
+            _confirmarCerrarSesion(context);
           } else {
             setState(() {
               _paginaActual = index;
