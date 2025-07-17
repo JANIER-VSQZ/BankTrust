@@ -221,7 +221,7 @@ class _TransferenciasState extends State<Transferencias> {
               Navigator.pushReplacement(
                 context,
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => historialmovimientos(),
+                  pageBuilder: (_, __, ___) => Historialmovimientos(),
                   transitionDuration: const Duration(seconds: 1),
                   reverseTransitionDuration: Duration.zero,
                   transitionsBuilder:

@@ -12,15 +12,15 @@ class transaccion {
   transaccion({required this.tipo, required this.monto, required this.cuenta});
 }
 
-class historialmovimientos extends StatefulWidget {
-  const historialmovimientos({super.key});
+class Historialmovimientos extends StatefulWidget {
+  const Historialmovimientos({super.key});
   @override
   HistorialmovimientosState createState() => HistorialmovimientosState();
 }
 
 enum Opcion { transferencias, pagos, nada }
 
-class HistorialmovimientosState extends State<historialmovimientos> {
+class HistorialmovimientosState extends State<Historialmovimientos> {
   Opcion _seleccion = Opcion.nada;
 
   final List<transaccion> _transaccion = [
@@ -46,7 +46,6 @@ class HistorialmovimientosState extends State<historialmovimientos> {
     transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
   ];
 
-  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   int _paginaActual = 3;
   @override
@@ -74,56 +73,6 @@ class HistorialmovimientosState extends State<historialmovimientos> {
         const SizedBox(height: 10),
         Expanded(child: cuerpo()),
       ],
-    ),
-    bottomNavigationBar: CurvedNavigationBar(
-      key: _bottomNavigationKey,
-      height: 60,
-      backgroundColor: const Color(0xFFFEF7FF),
-      color: const Color(0xFF328535),
-      buttonBackgroundColor: const Color(0xFF55A14E),
-      animationCurve: Curves.easeInOut,
-      animationDuration: const Duration(milliseconds: 300),
-      index: _paginaActual,
-      items: const <Widget>[
-        Icon(Icons.payment, size: 30, color: Colors.white),
-        Icon(Icons.swap_horiz, size: 30, color: Colors.white),
-        Icon(Icons.person, size: 30, color: Colors.white),
-        Icon(Icons.history, size: 30, color: Colors.white),
-        Icon(Icons.logout, size: 30, color: Colors.white),
-      ],
-      onTap: (index) {
-        setState(() {
-          _paginaActual = index;
-        });
-
-        switch (index) {
-          case 0:
-            break;
-          case 1:
-            break;
-          case 2:
-            Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (_, __, ___) => const Perfil(),
-                transitionDuration: Duration.zero,
-                reverseTransitionDuration: Duration.zero,
-              ),
-            );
-            break;
-          case 3:
-            break;
-          case 4:
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    RecuperarContrasena(cuenta: "123"),
-              ),
-            );
-            break;
-        }
-      },
     ),
   );
 }
