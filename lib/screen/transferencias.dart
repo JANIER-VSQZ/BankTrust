@@ -132,7 +132,11 @@ class _TransferenciasState extends State<Transferencias> {
               ),
             ),
             const SizedBox(height: 20),
-            const SizedBox(height: 40),
+            const Text(
+              "Datos",
+              style: TextStyle(fontSize: 45, color: const Color(0xFF328535)),
+            ),
+            const SizedBox(height: 20),
             const Text("CUENTA DE ORIGEN:", style: TextStyle(fontSize: 20)),
             const SizedBox(height: 5),
             Padding(
