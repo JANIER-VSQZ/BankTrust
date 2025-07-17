@@ -4,6 +4,7 @@ import 'package:banktrust/screen/recuperarcontrasena.dart';
 import 'package:banktrust/screen/transferencias.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:banktrust/main.dart';
 
 class Barramenu extends StatefulWidget {
   const Barramenu({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class _BarraMenuState extends State<Barramenu> {
     Transferencias(cuenta: "123"),
     Perfil(),
     Historialmovimientos(),
-    RecuperarContrasena(cuenta: "123"),
+    IniciarSesion(),
   ];
 
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
@@ -46,9 +47,16 @@ class _BarraMenuState extends State<Barramenu> {
           Icon(Icons.logout, size: 30, color: Colors.white),
         ],
         onTap: (index) {
-          setState(() {
-            _paginaActual = index;
-          });
+          if (index == 4) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const IniciarSesion()),
+              (Route<dynamic> route) => false,
+            );
+          } else {
+            setState(() {
+              _paginaActual = index;
+            });
+          }
         },
       ),
     );
