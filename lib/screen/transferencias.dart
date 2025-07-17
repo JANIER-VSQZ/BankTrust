@@ -137,7 +137,20 @@ class _TransferenciasState extends State<Transferencias> {
               style: TextStyle(fontSize: 45, color: const Color(0xFF328535)),
             ),
             const SizedBox(height: 20),
-            const Text("CUENTA DE ORIGEN:", style: TextStyle(fontSize: 20)),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'CUENTA DE ORIGEN:',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+            ),
             const SizedBox(height: 5),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
@@ -148,12 +161,25 @@ class _TransferenciasState extends State<Transferencias> {
                   labelText: "Cuenta de origen",
                   border: OutlineInputBorder(),
                   filled: true,
-                  fillColor: Color(0xFFcce1c6),
+                  fillColor: Color.fromARGB(255, 222, 222, 222),
                 ),
               ),
             ),
             const SizedBox(height: 25),
-            const Text("CUENTA DE DESTINO:", style: TextStyle(fontSize: 20)),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'CUENTA DE DESTINO:',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+            ),
             const SizedBox(height: 5),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
@@ -172,9 +198,19 @@ class _TransferenciasState extends State<Transferencias> {
               ),
             ),
             const SizedBox(height: 25),
-            const Text(
-              "MONTO DE TRANSFERENCIA:",
-              style: TextStyle(fontSize: 20),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'MONTO DE TRANSFERENCIA:',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
             ),
             const SizedBox(height: 5),
             Padding(
@@ -197,7 +233,20 @@ class _TransferenciasState extends State<Transferencias> {
               ),
             ),
             const SizedBox(height: 25),
-            const Text("CONCEPTO:", style: TextStyle(fontSize: 20)),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'CONCEPTO:',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+            ),
             const SizedBox(height: 5),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
