@@ -75,7 +75,14 @@ class _TransferenciasState extends State<Transferencias> {
         confirmado = await mtdOtraTransferencia(context);
         if (confirmado) {
           mtdLimpiarCampos();
-        } else {}
+        } else {
+          Future.delayed(const Duration(seconds: 0), () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Barramenu()),
+            ); //r
+          });
+        }
 
         // Navigator.pop(context);
       } else {
