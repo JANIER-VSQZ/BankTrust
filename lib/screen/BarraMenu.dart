@@ -1,6 +1,7 @@
 import 'package:banktrust/screen/historialmovimientos.dart';
 import 'package:banktrust/screen/perfil.dart';
 import 'package:banktrust/screen/recuperarcontrasena.dart';
+import 'package:banktrust/screen/transferencias.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
@@ -16,7 +17,7 @@ class _BarraMenuState extends State<Barramenu> {
 
   final List<Widget> _paginas = [
     RecuperarContrasena(cuenta: "123"),
-    Historialmovimientos(),
+    Transferencias(cuenta: "123"),
     Perfil(),
     Historialmovimientos(),
     RecuperarContrasena(cuenta: "123"),

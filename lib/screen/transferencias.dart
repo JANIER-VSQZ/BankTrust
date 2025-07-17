@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:banktrust/screen/historialmovimientos.dart';
-import 'package:banktrust/screen/perfil.dart';
+// import 'package:banktrust/screen/historialmovimientos.dart';
+// import 'package:banktrust/screen/perfil.dart';
 
 class Transferencias extends StatefulWidget {
   final String cuenta;
@@ -16,7 +16,7 @@ class Transferencias extends StatefulWidget {
 
 class _TransferenciasState extends State<Transferencias> {
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-  int _paginaActual = 1;
+  // int _paginaActual = 1;
 
   late TextEditingController cuentaOrigen = TextEditingController(
     text: widget.cuenta,
@@ -37,7 +37,7 @@ class _TransferenciasState extends State<Transferencias> {
     });
   }
 
-  void mtd_transferencia() {
+  void mtdTransferencia() {
     String vrCuentaDestino = cuentaDestino.text;
     String vrMonto = monto.text;
     String vrConcepto = concepto.text;
@@ -184,7 +184,7 @@ class _TransferenciasState extends State<Transferencias> {
             const SizedBox(height: 40),
             Center(
               child: ElevatedButton(
-                onPressed: mtd_transferencia,
+                onPressed: mtdTransferencia,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF27662A),
                   foregroundColor: Colors.white,
@@ -201,77 +201,77 @@ class _TransferenciasState extends State<Transferencias> {
           ],
         ),
       ),
-      bottomNavigationBar: CurvedNavigationBar(
-        key: _bottomNavigationKey,
-        height: 60,
-        backgroundColor: const Color(0xFFFEF7FF),
-        color: const Color(0xFF328535),
-        buttonBackgroundColor: const Color(0xFF55A14E),
-        animationCurve: Curves.easeInOut,
-        animationDuration: const Duration(milliseconds: 300),
-        index: _paginaActual,
-        items: const <Widget>[
-          Icon(Icons.payment, size: 30, color: Colors.white),
-          Icon(Icons.swap_horiz, size: 30, color: Colors.white),
-          Icon(Icons.person, size: 30, color: Colors.white),
-          Icon(Icons.history, size: 30, color: Colors.white),
-          Icon(Icons.logout, size: 30, color: Colors.white),
-        ],
-        onTap: (index) {
-          setState(() {
-            _paginaActual = index;
-          });
+      // bottomNavigationBar: CurvedNavigationBar(
+      //   key: _bottomNavigationKey,
+      //   height: 60,
+      //   backgroundColor: const Color(0xFFFEF7FF),
+      //   color: const Color(0xFF328535),
+      //   buttonBackgroundColor: const Color(0xFF55A14E),
+      //   animationCurve: Curves.easeInOut,
+      //   animationDuration: const Duration(milliseconds: 300),
+      //   index: _paginaActual,
+      //   items: const <Widget>[
+      //     Icon(Icons.payment, size: 30, color: Colors.white),
+      //     Icon(Icons.swap_horiz, size: 30, color: Colors.white),
+      //     Icon(Icons.person, size: 30, color: Colors.white),
+      //     Icon(Icons.history, size: 30, color: Colors.white),
+      //     Icon(Icons.logout, size: 30, color: Colors.white),
+      //   ],
+      //   onTap: (index) {
+      //     setState(() {
+      //       _paginaActual = index;
+      //     });
 
-          // Navegación futura
-          switch (index) {
-            case 0:
-              break;
-            case 1:
-              break;
-            case 2:
-              // Navigator.pushReplacement(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => Perfil()),
-              // );
-              Navigator.pushReplacement(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => Perfil(),
-                  transitionDuration: const Duration(milliseconds: 500),
-                  reverseTransitionDuration: Duration.zero,
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(opacity: animation, child: child);
-                      },
-                ),
-              );
-              break;
-            case 3:
-              Navigator.pushReplacement(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => Historialmovimientos(),
-                  transitionDuration: const Duration(seconds: 1),
-                  reverseTransitionDuration: Duration.zero,
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(opacity: animation, child: child);
-                      },
-                ),
-              );
-              break;
-            case 4:
-              // Navigator.pushReplacement(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) =>
-              //         RecuperarContrasena(cuenta: usuario.cuenta),
-              //   ),
-              // );
-              break;
-          }
-        },
-      ),
+      //     // Navegación futura
+      //     switch (index) {
+      //       case 0:
+      //         break;
+      //       case 1:
+      //         break;
+      //       case 2:
+      //         // Navigator.pushReplacement(
+      //         //   context,
+      //         //   MaterialPageRoute(builder: (context) => Perfil()),
+      //         // );
+      //         Navigator.pushReplacement(
+      //           context,
+      //           PageRouteBuilder(
+      //             pageBuilder: (_, __, ___) => Perfil(),
+      //             transitionDuration: const Duration(milliseconds: 500),
+      //             reverseTransitionDuration: Duration.zero,
+      //             transitionsBuilder:
+      //                 (context, animation, secondaryAnimation, child) {
+      //                   return FadeTransition(opacity: animation, child: child);
+      //                 },
+      //           ),
+      //         );
+      //         break;
+      //       case 3:
+      //         Navigator.pushReplacement(
+      //           context,
+      //           PageRouteBuilder(
+      //             pageBuilder: (_, __, ___) => Historialmovimientos(),
+      //             transitionDuration: const Duration(seconds: 1),
+      //             reverseTransitionDuration: Duration.zero,
+      //             transitionsBuilder:
+      //                 (context, animation, secondaryAnimation, child) {
+      //                   return FadeTransition(opacity: animation, child: child);
+      //                 },
+      //           ),
+      //         );
+      //         break;
+      //       case 4:
+      //         // Navigator.pushReplacement(
+      //         //   context,
+      //         //   MaterialPageRoute(
+      //         //     builder: (context) =>
+      //         //         RecuperarContrasena(cuenta: usuario.cuenta),
+      //         //   ),
+      //         // );
+      //         break;
+      //     }
+      //   },
+      // ),
     );
   }
 }
