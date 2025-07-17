@@ -50,11 +50,11 @@ class _IniciarSesionState extends State<IniciarSesion> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Barramenu()),
-        );//r
+        ); //r
       });
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,17 +62,17 @@ class _IniciarSesionState extends State<IniciarSesion> {
       appBar: AppBar(
         toolbarHeight: 120,
         title: Text(
-          "Iniciar Sesión",//i
+          "Iniciar Sesión", //i
           style: GoogleFonts.poppins(
             fontSize: 45,
             color: const Color(0xFF328535),
           ),
         ),
         centerTitle: true,
-        elevation: 0,//c
+        elevation: 0, //c
         backgroundColor: const Color(0xFFFEF7FF),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(
           children: [
@@ -83,7 +83,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                 "Inicia sesión para continuar",
                 style: TextStyle(fontSize: 18),
               ),
-            ),//k
+            ),
             const SizedBox(height: 80),
             SizedBox(
               width: 350,
@@ -104,7 +104,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                       fillColor: Color(0xFFcce1c6),
                     ),
                   ),
-                  const SizedBox(height: 25),//28
+                  const SizedBox(height: 25),
                   const Text("CONTRASEÑA", style: TextStyle(fontSize: 20)),
                   const SizedBox(height: 5),
                   TextField(
@@ -117,7 +117,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                       fillColor: Color(0xFFcce1c6),
                     ),
                   ),
-                  const SizedBox(height: 30),//2003
+                  const SizedBox(height: 30),
                   Center(
                     child: Column(
                       children: [
@@ -155,7 +155,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 40),
                   Center(
                     child: ElevatedButton(
                       onPressed: validarInicioSesion,
