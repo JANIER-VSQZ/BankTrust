@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 // import 'package:banktrust/screen/historialmovimientos.dart';
-// import 'package:banktrust/screen/perfil.dart';
+import 'package:banktrust/screen/Barramenu.dart';
 
 class Transferencias extends StatefulWidget {
   final String cuenta;
@@ -21,23 +21,26 @@ class _TransferenciasState extends State<Transferencias> {
   late TextEditingController cuentaOrigen = TextEditingController(
     text: widget.cuenta,
   );
-
   late TextEditingController cuentaDestino = TextEditingController();
   late TextEditingController monto = TextEditingController();
   late TextEditingController concepto = TextEditingController();
+  late FocusNode focusCuentaDestino;
 
   @override
   void initState() {
     super.initState();
-    cuentaDestino = TextEditingController(text: widget.cuenta);
+
+    cuentaDestino = TextEditingController();
+    focusCuentaDestino = FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      focusCuentaDestino.requestFocus();
       final navBarState = _bottomNavigationKey.currentState;
       navBarState?.setPage(1); // or any other index you want
     });
   }
 
-  void mtdTransferencia() {
+  Future<void> mtdTransferencia() async {
     String vrCuentaDestino = cuentaDestino.text;
     String vrMonto = monto.text;
     String vrConcepto = concepto.text;
@@ -61,11 +64,37 @@ class _TransferenciasState extends State<Transferencias> {
         ),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('La transferencia ha sido exitosa!')),
-      );
-      Navigator.pop(context);
+      // Mostrar mensaje de confirmación
+      bool confirmado = await mtdConfirmarDatos(context);
+
+      if (confirmado) {
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   const SnackBar(content: Text('La transferencia ha sido exitosa!')),
+        // );
+
+        confirmado = await mtdOtraTransferencia(context);
+        if (confirmado) {
+          mtdLimpiarCampos();
+        } else {
+          Barramenu();
+        }
+
+        // Navigator.pop(context);
+      } else {
+        // Usuario canceló
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Operación cancelada')));
+      }
     }
+  }
+
+  void mtdLimpiarCampos() {
+    cuentaDestino.clear();
+    monto.clear();
+    concepto.clear();
+
+    FocusScope.of(context).requestFocus(focusCuentaDestino);
   }
 
   @override
@@ -127,6 +156,7 @@ class _TransferenciasState extends State<Transferencias> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               child: TextField(
+                focusNode: focusCuentaDestino,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 controller: cuentaDestino,
@@ -274,4 +304,48 @@ class _TransferenciasState extends State<Transferencias> {
       // ),
     );
   }
+}
+
+Future<bool> mtdConfirmarDatos(BuildContext context) async {
+  return await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Confirmación'),
+          content: const Text('¿Está seguro que los datos son correctos?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Sí'),
+            ),
+          ],
+        ),
+      ) ??
+      false; // Retorna false si el usuario cierra el diálogo sin elegir
+}
+
+Future<bool> mtdOtraTransferencia(BuildContext context) async {
+  return await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Confirmación'),
+          content: const Text(
+            'La transferencia ha sido exitosa, ¿Desea realizar otra transferencia?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Sí'),
+            ),
+          ],
+        ),
+      ) ??
+      false; // Retorna false si el usuario cierra el diálogo sin elegir
 }
