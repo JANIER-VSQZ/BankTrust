@@ -1,9 +1,6 @@
-import 'package:banktrust/screen/historialmovimientos.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:banktrust/main.dart';
 import 'package:banktrust/screen/recuperarcontrasena.dart';
-import 'package:banktrust/screen/transferencias.dart';
 
 class Usuario {
   final String nombre;
