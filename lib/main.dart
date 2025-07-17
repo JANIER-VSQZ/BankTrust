@@ -1,3 +1,4 @@
+import 'package:banktrust/screen/BarraMenu.dart';
 import 'package:banktrust/screen/recuperarcontrasena.dart';
 import 'package:banktrust/screen/splashscreen.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
       Future.delayed(const Duration(seconds: 0), () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Perfil()),
+          MaterialPageRoute(builder: (context) => const Barramenu()),
         );//r
       });
     }
