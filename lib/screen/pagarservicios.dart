@@ -79,7 +79,7 @@ class _PagarserviciosState extends State<Pagarservicios> {
               children: [
                 const SizedBox(height: 30),
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -93,35 +93,40 @@ class _PagarserviciosState extends State<Pagarservicios> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFcce1c6),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      hint: const Text(
-                        'Elige una opción',
-                        style: TextStyle(color: Colors.black),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    children: [
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFcce1c6),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: DropdownButton<String>(
+                        isExpanded: true,
+                        hint: const Text(
+                          'Elige una opción',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        iconEnabledColor: Colors.white,
+                        underline: const SizedBox(),
+                        dropdownColor: Colors.white,
+                        value: _seleccion,
+                        items: _opciones.map((String valor) {
+                          return DropdownMenuItem<String>(
+                            value: valor,
+                            child: Text(valor),
+                          );
+                        }).toList(),
+                        onChanged: (String? nuevoValor) {
+                          setState(() {
+                            _seleccion = nuevoValor;
+                          });
+                        },
                       ),
-                      iconEnabledColor: Colors.white,
-                      underline: const SizedBox(),
-                      dropdownColor: Colors.white,
-                      value: _seleccion,
-                      items: _opciones.map((String valor) {
-                        return DropdownMenuItem<String>(
-                          value: valor,
-                          child: Text(valor),
-                        );
-                      }).toList(),
-                      onChanged: (String? nuevoValor) {
-                        setState(() {
-                          _seleccion = nuevoValor;
-                        });
-                      },
-                    ),
+                      ),
+                      
+                    ],
                   ),
                 ),
               ],
