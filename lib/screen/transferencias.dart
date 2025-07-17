@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:banktrust/screen/historialmovimientos.dart';
@@ -71,105 +72,133 @@ class _TransferenciasState extends State<Transferencias> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFEF7FF),
-      appBar: AppBar(
-        toolbarHeight: 120,
-        title: Text(
-          "Datos",
-          style: GoogleFonts.poppins(
-            fontSize: 44,
-            color: const Color(0xFF328535),
-          ),
-          textAlign: TextAlign.center,
-        ),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: const Color(0xFFFEF7FF),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25.0),
-        child: Center(
-          child: SizedBox(
-            width: 350,
-            child: ListView(
-              children: [
-                const SizedBox(height: 20),
-                const SizedBox(height: 40),
-                const Text("CUENTA DE ORIGEN:", style: TextStyle(fontSize: 20)),
-                const SizedBox(height: 5),
-                TextField(
-                  controller: cuentaOrigen,
-                  decoration: const InputDecoration(
-                    // labelText: "Cuenta de origen",
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Color(0xFFcce1c6),
+      // appBar: AppBar(
+      //   toolbarHeight: 120,
+      //   title: Text(
+      //     "Datos",
+      //     style: GoogleFonts.poppins(
+      //       fontSize: 44,
+      //       color: const Color(0xFF328535),
+      //     ),
+      //     textAlign: TextAlign.center,
+      //   ),
+      //   centerTitle: true,
+      //   elevation: 0,
+      //   backgroundColor: const Color(0xFFFEF7FF),
+      // ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              color: const Color(0xFF328535),
+              child: const Center(
+                child: Text(
+                  'REALIZAR TRANSFERENCIA',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 25),
-                const Text(
-                  "CUENTA DE DESTINO:",
-                  style: TextStyle(fontSize: 20),
-                ),
-                const SizedBox(height: 5),
-                TextField(
-                  controller: cuentaDestino,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: "Escriba aquí la cuenta de destino",
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Color(0xFFcce1c6),
-                  ),
-                ),
-                const SizedBox(height: 25),
-                const Text(
-                  "MONTO DE TRANSFERENCIA:",
-                  style: TextStyle(fontSize: 20),
-                ),
-                const SizedBox(height: 5),
-                TextField(
-                  controller: monto,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: "Escriba aquí el monto que desea transferir",
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Color(0xFFcce1c6),
-                  ),
-                ),
-                const SizedBox(height: 25),
-                const Text("CONCEPTO:", style: TextStyle(fontSize: 20)),
-                const SizedBox(height: 5),
-                TextField(
-                  controller: concepto,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText:
-                        "Por favor escriba un concepto para la transacción",
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Color(0xFFcce1c6),
-                  ),
-                ),
-                const SizedBox(height: 40),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: mtd_transferencia,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF27662A),
-                      foregroundColor: Colors.white,
-                      textStyle: const TextStyle(fontSize: 20),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
-                    ),
-                    child: const Text("Realizar transacción"),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            const SizedBox(height: 20),
+            const SizedBox(height: 40),
+            const Text("CUENTA DE ORIGEN:", style: TextStyle(fontSize: 20)),
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              child: TextField(
+                controller: cuentaOrigen,
+                decoration: const InputDecoration(
+                  enabled: false,
+                  labelText: "Cuenta de origen",
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Color(0xFFcce1c6),
+                ),
+              ),
+            ),
+            const SizedBox(height: 25),
+            const Text("CUENTA DE DESTINO:", style: TextStyle(fontSize: 20)),
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              child: TextField(
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                controller: cuentaDestino,
+                // obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: "Escriba aquí la cuenta de destino",
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Color(0xFFcce1c6),
+                ),
+              ),
+            ),
+            const SizedBox(height: 25),
+            const Text(
+              "MONTO DE TRANSFERENCIA:",
+              style: TextStyle(fontSize: 20),
+            ),
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              child: TextField(
+                controller: monto,
+                // obscureText: true,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
+                ],
+                decoration: const InputDecoration(
+                  labelText: "Escriba aquí el monto que desea transferir",
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Color(0xFFcce1c6),
+                ),
+              ),
+            ),
+            const SizedBox(height: 25),
+            const Text("CONCEPTO:", style: TextStyle(fontSize: 20)),
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              child: TextField(
+                controller: concepto,
+                // obscureText: true,
+                decoration: const InputDecoration(
+                  labelText:
+                      "Por favor escriba un concepto para la transacción",
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Color(0xFFcce1c6),
+                ),
+              ),
+            ),
+            const SizedBox(height: 40),
+            Center(
+              child: ElevatedButton(
+                onPressed: mtd_transferencia,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF27662A),
+                  foregroundColor: Colors.white,
+                  textStyle: const TextStyle(fontSize: 20),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
+                ),
+                child: const Text("Realizar transacción"),
+              ),
+            ),
+            const SizedBox(height: 40),
+          ],
         ),
       ),
       bottomNavigationBar: CurvedNavigationBar(
@@ -208,7 +237,7 @@ class _TransferenciasState extends State<Transferencias> {
                 context,
                 PageRouteBuilder(
                   pageBuilder: (_, __, ___) => Perfil(),
-                  transitionDuration: const Duration(seconds: 1),
+                  transitionDuration: const Duration(milliseconds: 500),
                   reverseTransitionDuration: Duration.zero,
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
@@ -222,7 +251,7 @@ class _TransferenciasState extends State<Transferencias> {
                 context,
                 PageRouteBuilder(
                   pageBuilder: (_, __, ___) => historialmovimientos(),
-                  transitionDuration: const Duration(seconds: 1),
+                  transitionDuration: const Duration(milliseconds: 500),
                   reverseTransitionDuration: Duration.zero,
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
