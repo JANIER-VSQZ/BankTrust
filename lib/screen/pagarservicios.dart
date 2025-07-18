@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Pagarservicios extends StatefulWidget {
   const Pagarservicios({super.key});
@@ -27,13 +28,13 @@ class _PagarserviciosState extends State<Pagarservicios> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 20),
             color: const Color(0xFF328535),
-            child: const Center(
+            child: Center(
               child: Text(
-                'Pago de Servicios',
-                style: TextStyle(
+                'PAGO DE SERVICIOS',
+                style: GoogleFonts.poppins(
                   color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 29.3,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
@@ -41,16 +42,16 @@ class _PagarserviciosState extends State<Pagarservicios> {
           const SizedBox(height: 20),
           Text(
             'Datos',
-            style: TextStyle(fontSize: 45, color: const Color(0xFF328535)),
+            style: GoogleFonts.poppins (fontSize: 45, color: Color(0xFF328535)),
           ),
           const SizedBox(height: 30),
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 30),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 'CUENTA DE ORIGEN:',
-                style: TextStyle(
+                style: GoogleFonts.dmSans(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.black54,
@@ -78,13 +79,13 @@ class _PagarserviciosState extends State<Pagarservicios> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 30),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'SERVICIO:',
-                      style: TextStyle(
+                      style: GoogleFonts.dmSans(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.black54,
@@ -133,13 +134,13 @@ class _PagarserviciosState extends State<Pagarservicios> {
             ),
           ),
           const SizedBox(height: 30),
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 30),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 'CANTIDAD A PAGAR:',
-                style: TextStyle(
+                style: GoogleFonts.dmSans(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.black54,
@@ -168,7 +169,7 @@ class _PagarserviciosState extends State<Pagarservicios> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF27662A),
                 foregroundColor: Colors.white,
-                textStyle: const TextStyle(fontSize: 20),
+                textStyle: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 15,

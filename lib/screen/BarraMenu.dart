@@ -1,7 +1,6 @@
 import 'package:banktrust/screen/historialmovimientos.dart';
 import 'package:banktrust/screen/pagarservicios.dart';
 import 'package:banktrust/screen/perfil.dart';
-import 'package:banktrust/screen/recuperarcontrasena.dart';
 import 'package:banktrust/screen/transferencias.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -63,7 +62,7 @@ class _BarraMenuState extends State<Barramenu> {
         height: 60,
         backgroundColor: const Color(0xFFFEF7FF),
         color: const Color(0xFF328535),
-        buttonBackgroundColor: const Color(0xFF55A14E),
+        buttonBackgroundColor: const Color(0xFF27662A),
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 300),
         index: _paginaActual,

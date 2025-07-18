@@ -74,7 +74,7 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
       appBar: AppBar(
         toolbarHeight: 120,
         title: Text(
-          "¿Ha Olvidado la\nContraseña?",
+          "¿Clave olvidada?",
           style: GoogleFonts.poppins(
             fontSize: 44,
             color: const Color(0xFF328535),
@@ -93,15 +93,16 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
             child: ListView(
               children: [
                 const SizedBox(height: 20),
-                const Align(
+                Align(
                   alignment: Alignment.center,
                   child: Text(
                     "Nueva contraseña",
-                    style: TextStyle(fontSize: 18),
+                    style: GoogleFonts.dmSans(fontSize: 18, color: Color(0xFF8F8E8E) ),
                   ),
                 ),
                 const SizedBox(height: 40),
-                const Text("NÚMERO DE CUENTA", style: TextStyle(fontSize: 20)),
+                Text("NÚMERO DE CUENTA",
+                 style: GoogleFonts.dmSans(fontSize: 20,color: Color(0xFF8F8E8E))),
                 const SizedBox(height: 5),
                 TextField(
                   controller: cuentaController,
@@ -113,7 +114,8 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                const Text("NUEVA CONTRASEÑA", style: TextStyle(fontSize: 20)),
+                Text("NUEVA CONTRASEÑA", 
+                style: GoogleFonts.dmSans(fontSize: 20,color: Color(0xFF8F8E8E))),
                 const SizedBox(height: 5),
                 TextField(
                   controller: contrasenaController,
@@ -132,7 +134,7 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF27662A),
                       foregroundColor: Colors.white,
-                      textStyle: const TextStyle(fontSize: 20),
+                      textStyle: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 15,

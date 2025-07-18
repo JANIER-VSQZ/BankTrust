@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 // import 'package:banktrust/screen/historialmovimientos.dart';
 import 'package:banktrust/screen/Barramenu.dart';
@@ -127,30 +127,30 @@ class _TransferenciasState extends State<Transferencias> {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 20),
               color: const Color(0xFF328535),
-              child: const Center(
+              child: Center(
                 child: Text(
                   'REALIZAR TRANSFERENCIA',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 29.3,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
+            Text(
               "Datos",
-              style: TextStyle(fontSize: 45, color: const Color(0xFF328535)),
+              style: GoogleFonts.poppins (fontSize: 45, color: Color(0xFF328535)),
             ),
             const SizedBox(height: 20),
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 30),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'CUENTA DE ORIGEN:',
-                  style: TextStyle(
+                  style:  GoogleFonts.dmSans(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black54,
@@ -173,13 +173,13 @@ class _TransferenciasState extends State<Transferencias> {
               ),
             ),
             const SizedBox(height: 25),
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 30),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'CUENTA DE DESTINO:',
-                  style: TextStyle(
+                  style: GoogleFonts.dmSans(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black54,
@@ -205,13 +205,13 @@ class _TransferenciasState extends State<Transferencias> {
               ),
             ),
             const SizedBox(height: 25),
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 30),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'MONTO DE TRANSFERENCIA:',
-                  style: TextStyle(
+                  style: GoogleFonts.dmSans(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black54,
@@ -240,13 +240,13 @@ class _TransferenciasState extends State<Transferencias> {
               ),
             ),
             const SizedBox(height: 25),
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 30),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'CONCEPTO:',
-                  style: TextStyle(
+                  style: GoogleFonts.dmSans(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black54,
@@ -276,7 +276,7 @@ class _TransferenciasState extends State<Transferencias> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF27662A),
                   foregroundColor: Colors.white,
-                  textStyle: const TextStyle(fontSize: 20),
+                  textStyle: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 15,

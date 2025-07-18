@@ -77,22 +77,25 @@ class _IniciarSesionState extends State<IniciarSesion> {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            const Align(
+            Align(
               alignment: Alignment.center,
               child: Text(
                 "Inicia sesión para continuar",
-                style: TextStyle(fontSize: 18),
+                style: GoogleFonts.dmSans(
+                  fontSize: 18, 
+                  color: Color(0xFF8F8E8E),
+                  ),
               ),
-            ),//k
+            ), //k
             const SizedBox(height: 80),
             SizedBox(
               width: 350,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "NÚMERO DE CUENTA",
-                    style: TextStyle(fontSize: 20),
+                    style: GoogleFonts.dmSans(fontSize: 20, color: Color(0xFF8F8E8E) ),
                   ),
                   const SizedBox(height: 5),
                   TextField(
@@ -105,7 +108,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                     ),
                   ),
                   const SizedBox(height: 25),
-                  const Text("CONTRASEÑA", style: TextStyle(fontSize: 20)),
+                  Text("CONTRASEÑA", style: GoogleFonts.dmSans(fontSize: 20,color: Color(0xFF8F8E8E))),
                   const SizedBox(height: 5),
                   TextField(
                     controller: contrasenaController,
@@ -132,9 +135,12 @@ class _IniciarSesionState extends State<IniciarSesion> {
                               ),
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             "¿Olvidó la Contraseña?",
-                            style: TextStyle(fontSize: 16, color: Colors.blue),
+                            style: GoogleFonts.dmSans(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 5),
@@ -147,9 +153,12 @@ class _IniciarSesionState extends State<IniciarSesion> {
                               ),
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             "Crear Cuenta",
-                            style: TextStyle(fontSize: 16, color: Colors.blue),//28
+                            style: GoogleFonts.dmSans(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ],
@@ -162,11 +171,11 @@ class _IniciarSesionState extends State<IniciarSesion> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF27662A),
                         foregroundColor: Colors.white,
-                        textStyle: const TextStyle(fontSize: 20),
+                        textStyle: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700),
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,
                           vertical: 15,
-                        ),//2003
+                        ), //2003
                       ),
                       child: const Text("Iniciar Sesión"),
                     ),

@@ -46,47 +46,45 @@ class HistorialmovimientosState extends State<Historialmovimientos> {
     transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
   ];
 
-
   int _paginaActual = 3;
   @override
   Widget build(BuildContext context) {
-  return Scaffold(
-    backgroundColor: const Color(0xFFFEF7FF),
-    body: Column(
-      children: [
-        // Encabezado estilo perfil
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          color: const Color(0xFF328535),
-          child: const Center(
-            child: Text(
-              'HISTORIAL',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+    return Scaffold(
+      backgroundColor: const Color(0xFFFEF7FF),
+      body: Column(
+        children: [
+          // Encabezado estilo perfil
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            color: const Color(0xFF328535),
+            child: Center(
+              child: Text(
+                'HISTORIAL',
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 29.3,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),
-        ),
-        const SizedBox(height: 10),
-        Expanded(child: cuerpo()),
-      ],
-    ),
-  );
-}
-
+          const SizedBox(height: 10),
+          Expanded(child: cuerpo()),
+        ],
+      ),
+    );
+  }
 
   Widget cuerpo() {
-        return Column(
-          children: [
-            titulo(),
-            radio("TRANSFERENCIAS"),
-            radio("PAGOS"),
-            Expanded(child: textos()),
-          ],
-        );
+    return Column(
+      children: [
+        titulo(),
+        radio("TRANSFERENCIAS"),
+        radio("PAGOS"),
+        Expanded(child: textos()),
+      ],
+    );
   }
 
   Widget titulo() {
@@ -155,7 +153,14 @@ class HistorialmovimientosState extends State<Historialmovimientos> {
       padding: EdgeInsets.symmetric(horizontal: 60),
       child: RadioListTile<Opcion>(
         controlAffinity: ListTileControlAffinity.trailing,
-        title: Text(opc),
+        title: Text(
+          opc,
+          style: GoogleFonts.dmSans(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black54,
+          ),
+        ),
         value: valorRadio,
         groupValue: _seleccion,
         onChanged: (Opcion? nuevoValor) {
