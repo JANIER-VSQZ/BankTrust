@@ -4,7 +4,8 @@ import 'package:banktrust/screen/splashscreen.dart';
 import 'package:flutter/material.dart';
 import './screen/crearcuenta.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'screen/perfil.dart';
+// import 'screen/perfil.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -100,6 +101,8 @@ class _IniciarSesionState extends State<IniciarSesion> {
                   const SizedBox(height: 5),
                   TextField(
                     controller: cuentaController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: const InputDecoration(
                       labelText: "Ingrese su número",
                       border: OutlineInputBorder(),

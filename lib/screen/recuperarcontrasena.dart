@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
 class RecuperarContrasena extends StatefulWidget {
   final String cuenta;
@@ -106,6 +107,8 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
                 const SizedBox(height: 5),
                 TextField(
                   controller: cuentaController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: const InputDecoration(
                     labelText: "Ingrese su número",
                     border: OutlineInputBorder(),

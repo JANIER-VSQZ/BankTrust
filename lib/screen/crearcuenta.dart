@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
 class CrearCuenta extends StatefulWidget {
   const CrearCuenta({super.key});
@@ -77,6 +78,8 @@ class _CrearCuentaState extends State<CrearCuenta> {
                 const SizedBox(height: 5),
                 TextField(
                   controller: cuentaController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: const InputDecoration(
                     labelText: "Ingrese su número",
                     border: OutlineInputBorder(),

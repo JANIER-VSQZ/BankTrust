@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
 class Pagarservicios extends StatefulWidget {
   const Pagarservicios({super.key});
@@ -153,6 +154,8 @@ class _PagarserviciosState extends State<Pagarservicios> {
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
             child: TextField(
               controller: cantpagar,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: const InputDecoration(
                 enabled: true,
                 labelText: "L.0.00",
