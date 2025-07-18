@@ -110,7 +110,7 @@ class _PerfilState extends State<Perfil> {
                 'Cambiar contraseña',
                 style: GoogleFonts.dmSans(
                   color: Colors.blue,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),

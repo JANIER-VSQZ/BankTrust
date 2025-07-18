@@ -139,7 +139,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                             "¿Olvidó la Contraseña?",
                             style: GoogleFonts.dmSans(
                               color: Colors.blue,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ),
@@ -157,7 +157,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                             "Crear Cuenta",
                             style: GoogleFonts.dmSans(
                               color: Colors.blue,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ),
