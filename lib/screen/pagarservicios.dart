@@ -111,7 +111,7 @@ class _PagarserviciosState extends State<Pagarservicios> {
                           ),
                           child: DropdownButton<String>(
                             isExpanded: true,
-                            hint: Text("Elija una opcion"),
+                            hint: Text("Elija una opción"),
                             iconEnabledColor: Colors.white,
                             underline: const SizedBox(),
                             dropdownColor: const Color(0xFFcce1c6),
@@ -194,9 +194,37 @@ class _PagarserviciosState extends State<Pagarservicios> {
     );
   }
 
-  void mtdTransferencia() {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Pago realizado con éxito')));
+  Future<void> mtdTransferencia() async {
+    bool confirmado = await mtdConfirmarDatos(context);
+    if (confirmado) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Pago realizado con éxito')));
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Pago cancelado')));
+    }
   }
+}
+
+Future<bool> mtdConfirmarDatos(BuildContext context) async {
+  return await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Confirmación'),
+          content: const Text('¿Está seguro que los datos son correctos?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Sí'),
+            ),
+          ],
+        ),
+      ) ??
+      false;
 }
