@@ -42,8 +42,6 @@ class HistorialmovimientosState extends State<Historialmovimientos> {
     Transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
     Transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
   ];
-
-  int _paginaActual = 3;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
