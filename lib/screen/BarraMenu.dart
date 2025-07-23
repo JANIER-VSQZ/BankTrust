@@ -1,6 +1,6 @@
 import 'package:banktrust/screen/historialmovimientos.dart';
+import 'package:banktrust/screen/pagarservicios.dart';
 import 'package:banktrust/screen/perfil.dart';
-import 'package:banktrust/screen/recuperarcontrasena.dart';
 import 'package:banktrust/screen/transferencias.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -17,14 +17,41 @@ class _BarraMenuState extends State<Barramenu> {
   int _paginaActual = 2;
 
   final List<Widget> _paginas = [
-    RecuperarContrasena(cuenta: "123"),
+    Pagarservicios(),
     Transferencias(cuenta: "123"),
     Perfil(),
     Historialmovimientos(),
-    IniciarSesion(),
   ];
 
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+
+  Future<void> _confirmarCerrarSesion(BuildContext context) async {
+    final bool salir = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Confirmar salida"),
+            content: const Text("¿Estás seguro que deseas cerrar sesión?"),
+            actions: [
+              TextButton(
+                child: const Text("Cancelar"),
+                onPressed: () => Navigator.of(context).pop(false),
+              ),
+              TextButton(
+                child: const Text("Sí, salir"),
+                onPressed: () => Navigator.of(context).pop(true),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+
+    if (salir) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const IniciarSesion()),
+        (Route<dynamic> route) => false,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +62,7 @@ class _BarraMenuState extends State<Barramenu> {
         height: 60,
         backgroundColor: const Color(0xFFFEF7FF),
         color: const Color(0xFF328535),
-        buttonBackgroundColor: const Color(0xFF55A14E),
+        buttonBackgroundColor: const Color(0xFF27662A),
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 300),
         index: _paginaActual,
@@ -48,10 +75,7 @@ class _BarraMenuState extends State<Barramenu> {
         ],
         onTap: (index) {
           if (index == 4) {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => const IniciarSesion()),
-              (Route<dynamic> route) => false,
-            );
+            _confirmarCerrarSesion(context);
           } else {
             setState(() {
               _paginaActual = index;

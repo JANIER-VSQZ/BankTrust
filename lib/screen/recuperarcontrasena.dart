@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
 class RecuperarContrasena extends StatefulWidget {
   final String cuenta;
@@ -19,21 +20,52 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
     super.initState();
     cuentaController = TextEditingController(text: widget.cuenta);
   }
-//r
-  void recuperarContrasena() {
+
+  //r
+  void recuperarContrasena() async {
     String cuenta = cuentaController.text;
     String contrasena = contrasenaController.text;
 
     if (cuenta.isNotEmpty && contrasena.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Contraseña cambiada exitosamente')),
-      );
-      Navigator.pop(context);
+      bool confirmado = await confirmarCambioContrasena(context);
+      if (confirmado) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Contraseña cambiada exitosamente')),
+        );
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Operación cancelada')));
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Por favor complete todos los campos')),
       );
     }
+  }
+
+  Future<bool> confirmarCambioContrasena(BuildContext context) async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Confirmación'),
+            content: const Text(
+              '¿Está seguro que desea cambiar la contraseña de esta cuenta?',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('Sí'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
   }
 
   @override
@@ -43,17 +75,17 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
       appBar: AppBar(
         toolbarHeight: 120,
         title: Text(
-          "¿Ha Olvidado la\nContraseña?",
+          "¿Clave olvidada?",
           style: GoogleFonts.poppins(
             fontSize: 44,
             color: const Color(0xFF328535),
-          ),//i
+          ), //i
           textAlign: TextAlign.center,
         ),
         centerTitle: true,
         elevation: 0,
         backgroundColor: const Color(0xFFFEF7FF),
-      ),// 28
+      ), // 28
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Center(
@@ -62,18 +94,21 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
             child: ListView(
               children: [
                 const SizedBox(height: 20),
-                const Align(
+                Align(
                   alignment: Alignment.center,
                   child: Text(
                     "Nueva contraseña",
-                    style: TextStyle(fontSize: 18),
+                    style: GoogleFonts.dmSans(fontSize: 18, color: Color(0xFF8F8E8E) ),
                   ),
                 ),
                 const SizedBox(height: 40),
-                const Text("NÚMERO DE CUENTA", style: TextStyle(fontSize: 20)),
+                Text("NÚMERO DE CUENTA",
+                 style: GoogleFonts.dmSans(fontSize: 20,color: Color(0xFF8F8E8E))),
                 const SizedBox(height: 5),
                 TextField(
                   controller: cuentaController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: const InputDecoration(
                     labelText: "Ingrese su número",
                     border: OutlineInputBorder(),
@@ -82,7 +117,8 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                const Text("NUEVA CONTRASEÑA", style: TextStyle(fontSize: 20)),
+                Text("NUEVA CONTRASEÑA", 
+                style: GoogleFonts.dmSans(fontSize: 20,color: Color(0xFF8F8E8E))),
                 const SizedBox(height: 5),
                 TextField(
                   controller: contrasenaController,
@@ -93,7 +129,7 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
                     filled: true,
                     fillColor: Color(0xFFcce1c6),
                   ),
-                ),//2003
+                ), //2003
                 const SizedBox(height: 40),
                 Center(
                   child: ElevatedButton(
@@ -101,7 +137,7 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF27662A),
                       foregroundColor: Colors.white,
-                      textStyle: const TextStyle(fontSize: 20),
+                      textStyle: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 15,
@@ -113,8 +149,8 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
               ],
             ),
           ),
-        ),//c
+        ), //c
       ),
     );
-  }//k
+  } //k
 }

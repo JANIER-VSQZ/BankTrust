@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
 class CrearCuenta extends StatefulWidget {
   const CrearCuenta({super.key});
@@ -45,7 +46,7 @@ class _CrearCuentaState extends State<CrearCuenta> {
         toolbarHeight: 120,
         title: Text(
           "Crear Cuenta",
-          style: GoogleFonts.poppins (fontSize: 45, color: Color(0xFF328535)),
+ style: GoogleFonts.poppins (fontSize: 45, color: Color(0xFF328535)),         
         ),
         centerTitle: true,
         elevation: 0,
@@ -59,21 +60,26 @@ class _CrearCuentaState extends State<CrearCuenta> {
             child: ListView(
               children: [
                 const SizedBox(height: 20),
-                const Align(
+                Align(
                   alignment: Alignment.center,
                   child: Text(
                     "Complete el formulario para registrarse",
-                    style: TextStyle(fontSize: 18),
+                    style: GoogleFonts.dmSans(
+                  fontSize: 18, 
+                  color: Color(0xFF8F8E8E),
+                  ),
                   ),
                 ),
                 const SizedBox(height: 40),
-                const Text(
+                Text(
                   "NÚMERO DE CUENTA",
-                  style: TextStyle(fontSize: 20),
+                  style: GoogleFonts.dmSans(fontSize: 20, color: Color(0xFF8F8E8E) ),
                 ),
                 const SizedBox(height: 5),
                 TextField(
                   controller: cuentaController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: const InputDecoration(
                     labelText: "Ingrese su número",
                     border: OutlineInputBorder(),
@@ -82,9 +88,9 @@ class _CrearCuentaState extends State<CrearCuenta> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                const Text(
+                Text(
                   "CONTRASEÑA",
-                  style: TextStyle(fontSize: 20),
+                  style: GoogleFonts.dmSans(fontSize: 20, color: Color(0xFF8F8E8E) ),
                 ),
                 const SizedBox(height: 5),
                 TextField(
@@ -98,9 +104,9 @@ class _CrearCuentaState extends State<CrearCuenta> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                const Text(
+                Text(
                   "NOMBRE",
-                  style: TextStyle(fontSize: 20),
+                  style: GoogleFonts.dmSans(fontSize: 20, color: Color(0xFF8F8E8E) ),
                 ),
                 const SizedBox(height: 5),
                 TextField(
@@ -113,9 +119,9 @@ class _CrearCuentaState extends State<CrearCuenta> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                const Text(
+                Text(
                   "APELLIDO",
-                  style: TextStyle(fontSize: 20),
+                  style: GoogleFonts.dmSans(fontSize: 20, color: Color(0xFF8F8E8E) ),
                 ),
                 const SizedBox(height: 5),
                 TextField(
@@ -134,7 +140,7 @@ class _CrearCuentaState extends State<CrearCuenta> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF27662A),
                       foregroundColor: Colors.white,
-                      textStyle: const TextStyle(fontSize: 20),
+                      textStyle: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 15,

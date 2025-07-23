@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:banktrust/screen/recuperarcontrasena.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Usuario {
   final String nombre;
@@ -39,13 +40,13 @@ class _PerfilState extends State<Perfil> {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 20),
               color: const Color(0xFF328535),
-              child: const Center(
+              child: Center(
                 child: Text(
                   'PERFIL',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 29.3,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -59,25 +60,21 @@ class _PerfilState extends State<Perfil> {
             const SizedBox(height: 10),
             Text(
               usuario.nombre,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF328535),
-              ),
+             style: GoogleFonts.poppins (fontSize: 45, color: Color(0xFF328535)),
             ),
             const SizedBox(height: 5),
             Text(
               usuario.cuenta,
-              style: const TextStyle(fontSize: 16, color: Colors.black54),
+              style: GoogleFonts.dmSans(fontSize: 16, color: Colors.black54),
             ),
             const SizedBox(height: 30),
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 30),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'SALDO',
-                  style: TextStyle(
+                  style: GoogleFonts.dmSans(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black54,
@@ -109,11 +106,11 @@ class _PerfilState extends State<Perfil> {
                   ),
                 );
               },
-              child: const Text(
+              child: Text(
                 'Cambiar contraseña',
-                style: TextStyle(
+                style: GoogleFonts.dmSans(
                   color: Colors.blue,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),
