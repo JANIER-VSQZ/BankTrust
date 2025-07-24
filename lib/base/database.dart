@@ -72,7 +72,7 @@ class DatabaseHelper {
     String nombre,
     int numero,
     String clave,
-    Double saldo,
+    double saldo,
   ) async {
     final db = await database;
     await db.insert('CUENTAS', {
