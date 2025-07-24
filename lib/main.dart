@@ -80,7 +80,6 @@ class _IniciarSesionState extends State<IniciarSesion> {
           MaterialPageRoute(builder: (context) => const Barramenu()),
         );
       } else {
-        // SnackBar ahora seguro se muestra
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Cuenta o contraseña incorrecta')),
         );
