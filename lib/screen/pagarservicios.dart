@@ -17,9 +17,22 @@ class _PagarserviciosState extends State<Pagarservicios> {
     'Seguro Medico',
     'Seguro Vehicular',
   ];
-  var cuentaOrigen;
-  var cantpagar;
-  var _seleccion;
+
+  final TextEditingController cantpagarController = TextEditingController();
+  String? _seleccion;
+
+  @override
+  void initState() {
+    super.initState();
+    cantpagarController.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    cantpagarController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +41,7 @@ class _PagarserviciosState extends State<Pagarservicios> {
           children: [
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.only(top: 40, bottom: 10),
               color: const Color(0xFF328535),
               child: Center(
                 child: Text(
@@ -68,7 +81,7 @@ class _PagarserviciosState extends State<Pagarservicios> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               child: TextField(
-                controller: cuentaOrigen,
+                controller: TextEditingController(text: '123'),
                 decoration: const InputDecoration(
                   enabled: false,
                   labelText: "123",
@@ -101,38 +114,33 @@ class _PagarserviciosState extends State<Pagarservicios> {
                   const SizedBox(height: 12),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                    child: Column(
-                      children: [
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFcce1c6),
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: Colors.black, width: 1),
-                          ),
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            hint: Text("Elija una opción"),
-                            iconEnabledColor: Colors.white,
-                            underline: const SizedBox(),
-                            dropdownColor: const Color(0xFFcce1c6),
-                            value: _seleccion,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                            ),
-                            items: _opciones.map((String valor) {
-                              return DropdownMenuItem<String>(
-                                value: valor,
-                                child: Text(valor),
-                              );
-                            }).toList(),
-                            onChanged: (String? nuevoValor) {
-                              setState(() {
-                                _seleccion = nuevoValor;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFcce1c6),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: Colors.black, width: 1),
+                      ),
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        hint: const Text("Elija una opción"),
+                        iconEnabledColor: Colors.white,
+                        underline: const SizedBox(),
+                        dropdownColor: const Color(0xFFcce1c6),
+                        value: _seleccion,
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        items: _opciones.map((String valor) {
+                          return DropdownMenuItem<String>(
+                            value: valor,
+                            child: Text(valor),
+                          );
+                        }).toList(),
+                        onChanged: (String? nuevoValor) {
+                          setState(() {
+                            _seleccion = nuevoValor;
+                            cantpagarController.clear();
+                          });
+                        },
+                      ),
                     ),
                   ),
                 ],
@@ -157,22 +165,38 @@ class _PagarserviciosState extends State<Pagarservicios> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               child: TextField(
-                controller: cantpagar,
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                controller: cantpagarController,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9\.,]')),
+                  TextInputFormatter.withFunction((oldValue, newValue) {
+                    String text = newValue.text;
+                    if (text.contains('.') && text.contains(',')) {
+                      return oldValue;
+                    }
+                    return newValue;
+                  }),
+                ],
+                enabled: _seleccion != null,
                 decoration: const InputDecoration(
-                  enabled: true,
                   labelText: "L.0.00",
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Color(0xFFcce1c6),
                 ),
+                onChanged: (value) {
+                  if (value.length == 1 && value == '0') {
+                    cantpagarController.clear();
+                  }
+                },
               ),
             ),
             const SizedBox(height: 30),
             Center(
               child: ElevatedButton(
-                onPressed: mtdTransferencia,
+                onPressed: cantpagarController.text.isNotEmpty
+                    ? mtdTransferencia
+                    : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF27662A),
                   foregroundColor: Colors.white,
@@ -200,6 +224,10 @@ class _PagarserviciosState extends State<Pagarservicios> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Pago realizado con éxito')));
+      setState(() {
+        cantpagarController.clear();
+        _seleccion = null;
+      });
     } else {
       ScaffoldMessenger.of(
         context,
