@@ -82,4 +82,15 @@ class DatabaseHelper {
       'SALDO': saldo,
     }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
+
+  Future<void> updateCuentaClave(int id, String clave) async {
+    final db = await database;
+    await db.update(
+      'CUENTAS',
+      {'CLAVE': clave},
+      where: 'id = ?',
+      whereArgs: [id],
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
 }
