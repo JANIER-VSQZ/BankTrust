@@ -1,4 +1,6 @@
 // lib/base/database_helper.dart
+import 'dart:ffi';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -66,7 +68,12 @@ class DatabaseHelper {
     return await db.query('CUENTAS');
   }
 
-  Future<void> insertCuenta(String nombre, int numero, String clave, double saldo) async {
+  Future<void> insertCuenta(
+    String nombre,
+    int numero,
+    String clave,
+    Double saldo,
+  ) async {
     final db = await database;
     await db.insert('CUENTAS', {
       'NOMBRE': nombre,
