@@ -28,7 +28,8 @@ class DatabaseHelper {
             ID INTEGER PRIMARY KEY AUTOINCREMENT,
             NUMERO INTEGER,
             CLAVE VARCHAR(50),
-            NOMBRE VARCHAR(50)
+            NOMBRE VARCHAR(50),
+            SALDO NUMERIC(12,2)
           )
         ''');
         await db.execute('''
