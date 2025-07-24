@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 
+import 'package:banktrust/sesion.dart';
+import 'package:banktrust/base/database.dart';
+
 class RecuperarContrasena extends StatefulWidget {
   final String cuenta;
 
@@ -23,6 +26,46 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
 
   //r
   void recuperarContrasena() async {
+    String nuevaClave = contrasenaController.text.trim();
+    String cuenta = cuentaController.text.trim();
+
+    if (nuevaClave.isEmpty || cuenta.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor complete todos los campos')),
+      );
+      return;
+    }
+
+    bool confirmado = await confirmarCambioContrasena(context);
+
+    if (!confirmado) return;
+
+    try {
+      final db = await DatabaseHelper().database;
+
+      final updated = await db.update(
+        'CUENTAS',
+        {'CLAVE': nuevaClave},
+        where: 'NUMERO = ?',
+        whereArgs: [int.tryParse(cuenta)],
+      );
+
+      if (updated > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Contraseña cambiada exitosamente')),
+        );
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Cuenta no encontrada')));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+    }
+    /*
     String cuenta = cuentaController.text;
     String contrasena = contrasenaController.text;
 
@@ -43,6 +86,7 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
         const SnackBar(content: Text('Por favor complete todos los campos')),
       );
     }
+    */
   }
 
   Future<bool> confirmarCambioContrasena(BuildContext context) async {
@@ -98,12 +142,20 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
                   alignment: Alignment.center,
                   child: Text(
                     "Nueva contraseña",
-                    style: GoogleFonts.dmSans(fontSize: 18, color: Color(0xFF8F8E8E) ),
+                    style: GoogleFonts.dmSans(
+                      fontSize: 18,
+                      color: Color(0xFF8F8E8E),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 40),
-                Text("NÚMERO DE CUENTA",
-                 style: GoogleFonts.dmSans(fontSize: 20,color: Color(0xFF8F8E8E))),
+                Text(
+                  "NÚMERO DE CUENTA",
+                  style: GoogleFonts.dmSans(
+                    fontSize: 20,
+                    color: Color(0xFF8F8E8E),
+                  ),
+                ),
                 const SizedBox(height: 5),
                 TextField(
                   controller: cuentaController,
@@ -117,8 +169,13 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                Text("NUEVA CONTRASEÑA", 
-                style: GoogleFonts.dmSans(fontSize: 20,color: Color(0xFF8F8E8E))),
+                Text(
+                  "NUEVA CONTRASEÑA",
+                  style: GoogleFonts.dmSans(
+                    fontSize: 20,
+                    color: Color(0xFF8F8E8E),
+                  ),
+                ),
                 const SizedBox(height: 5),
                 TextField(
                   controller: contrasenaController,
@@ -137,7 +194,10 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF27662A),
                       foregroundColor: Colors.white,
-                      textStyle: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700),
+                      textStyle: GoogleFonts.poppins(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 15,

@@ -3,13 +3,9 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:banktrust/screen/recuperarcontrasena.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Usuario {
-  final String nombre;
-  final String cuenta;
-  final double saldo;
+import 'package:banktrust/sesion.dart';
 
-  Usuario({required this.nombre, required this.cuenta, required this.saldo});
-}
+final usuario = Sesion.usuarioActual;
 
 class Perfil extends StatefulWidget {
   const Perfil({super.key});
@@ -22,15 +18,21 @@ class _PerfilState extends State<Perfil> {
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
   int _paginaActual = 2;
 
-  // Datos relleno
-  final Usuario usuario = Usuario(
-    nombre: 'Jana Martín',
-    cuenta: '0685200026542',
-    saldo: 100000.0,
-  );
-
   @override
   Widget build(BuildContext context) {
+    final usuario = Sesion.usuarioActual;
+
+    if (usuario == null) {
+      return Scaffold(
+        body: Center(
+          child: Text(
+            'No hay usuario activo',
+            style: GoogleFonts.poppins(fontSize: 18),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFFFEF7FF),
       body: SingleChildScrollView(
@@ -60,7 +62,10 @@ class _PerfilState extends State<Perfil> {
             const SizedBox(height: 10),
             Text(
               usuario.nombre,
-             style: GoogleFonts.poppins (fontSize: 45, color: Color(0xFF328535)),
+              style: GoogleFonts.poppins(
+                fontSize: 45,
+                color: Color(0xFF328535),
+              ),
             ),
             const SizedBox(height: 5),
             Text(
@@ -87,7 +92,7 @@ class _PerfilState extends State<Perfil> {
               child: TextField(
                 enabled: false,
                 controller: TextEditingController(
-                  text: 'L ${usuario.saldo.toStringAsFixed(2)}',
+                  //text: 'L ${usuario.saldo.toStringAsFixed(2)}',
                 ),
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),

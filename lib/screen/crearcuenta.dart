@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 
+import 'package:banktrust/base/database.dart';
+
 class CrearCuenta extends StatefulWidget {
   const CrearCuenta({super.key});
 
@@ -15,26 +17,37 @@ class _CrearCuentaState extends State<CrearCuenta> {
   final TextEditingController nombreController = TextEditingController();
   final TextEditingController apellidoController = TextEditingController();
 
-  void crearCuenta() {
-    String cuenta = cuentaController.text;
-    String contrasena = contrasenaController.text;
-    String nombre = nombreController.text;
-    String apellido = apellidoController.text;
+  void crearCuenta() async {
+  String cuenta = cuentaController.text.trim();
+  String contrasena = contrasenaController.text.trim();
+  String nombre = nombreController.text.trim();
+  String apellido = apellidoController.text.trim();
 
-    if (cuenta.isNotEmpty &&
-        contrasena.isNotEmpty &&
-        nombre.isNotEmpty &&
-        apellido.isNotEmpty) {
+  if (cuenta.isNotEmpty &&
+      contrasena.isNotEmpty &&
+      nombre.isNotEmpty &&
+      apellido.isNotEmpty) {
+    try {
+      await DatabaseHelper().insertCuenta(
+        '$nombre $apellido',
+        int.parse(cuenta),
+        contrasena,
+      );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Cuenta creada exitosamente')),
       );
       Navigator.pop(context);
-    } else {
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor complete todos los campos')),
+        SnackBar(content: Text('Error al crear cuenta: $e')),
       );
     }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Por favor complete todos los campos')),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {

@@ -7,6 +7,10 @@ import 'package:google_fonts/google_fonts.dart';
 // import 'screen/perfil.dart';
 import 'package:flutter/services.dart';
 
+import 'package:banktrust/base/database.dart';
+import 'package:banktrust/models/usuario.dart'; // ajusta la ruta según tu proyecto
+import 'package:banktrust/sesion.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -34,7 +38,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
   final TextEditingController cuentaController = TextEditingController();
   final TextEditingController contrasenaController = TextEditingController();
 
-  void validarInicioSesion() {
+  void validarInicioSesion() async {
     final cuenta = cuentaController.text.trim();
     final contrasena = contrasenaController.text.trim();
 
@@ -42,17 +46,49 @@ class _IniciarSesionState extends State<IniciarSesion> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Por favor complete todos los campos')),
       );
-    } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Inicio de sesión exitoso')));
+      return;
+    }
 
-      Future.delayed(const Duration(seconds: 0), () {
-        Navigator.push(
+    final cuentaParsed = int.tryParse(cuenta);
+    if (cuentaParsed == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Número de cuenta inválido')),
+      );
+      return;
+    }
+
+    try {
+      final db = await DatabaseHelper().database;
+      final result = await db.query(
+        'CUENTAS',
+        where: 'NUMERO = ? AND CLAVE = ?',
+        whereArgs: [cuentaParsed, contrasena],
+      );
+
+      if (result.isNotEmpty) {
+        final cuenta = result.first;
+
+        final usuario = Usuario(
+          nombre: cuenta['NOMBRE']?.toString() ?? '',
+          cuenta: cuenta['NUMERO']?.toString() ?? '',
+        );
+
+        Sesion.usuarioActual = usuario;
+
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Barramenu()),
-        ); //r
-      });
+        );
+      } else {
+        // SnackBar ahora seguro se muestra
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Cuenta o contraseña incorrecta')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error al iniciar sesión: $e')));
     }
   }
 
@@ -83,9 +119,9 @@ class _IniciarSesionState extends State<IniciarSesion> {
               child: Text(
                 "Inicia sesión para continuar",
                 style: GoogleFonts.dmSans(
-                  fontSize: 18, 
+                  fontSize: 18,
                   color: Color(0xFF8F8E8E),
-                  ),
+                ),
               ),
             ), //k
             const SizedBox(height: 80),
@@ -96,7 +132,10 @@ class _IniciarSesionState extends State<IniciarSesion> {
                 children: [
                   Text(
                     "NÚMERO DE CUENTA",
-                    style: GoogleFonts.dmSans(fontSize: 20, color: Color(0xFF8F8E8E) ),
+                    style: GoogleFonts.dmSans(
+                      fontSize: 20,
+                      color: Color(0xFF8F8E8E),
+                    ),
                   ),
                   const SizedBox(height: 5),
                   TextField(
@@ -111,7 +150,13 @@ class _IniciarSesionState extends State<IniciarSesion> {
                     ),
                   ),
                   const SizedBox(height: 25),
-                  Text("CONTRASEÑA", style: GoogleFonts.dmSans(fontSize: 20,color: Color(0xFF8F8E8E))),
+                  Text(
+                    "CONTRASEÑA",
+                    style: GoogleFonts.dmSans(
+                      fontSize: 20,
+                      color: Color(0xFF8F8E8E),
+                    ),
+                  ),
                   const SizedBox(height: 5),
                   TextField(
                     controller: contrasenaController,
@@ -174,7 +219,10 @@ class _IniciarSesionState extends State<IniciarSesion> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF27662A),
                         foregroundColor: Colors.white,
-                        textStyle: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700),
+                        textStyle: GoogleFonts.poppins(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,
                           vertical: 15,
