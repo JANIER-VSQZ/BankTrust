@@ -66,12 +66,13 @@ class DatabaseHelper {
     return await db.query('CUENTAS');
   }
 
-  Future<void> insertCuenta(String nombre, int numero, String clave) async {
+  Future<void> insertCuenta(String nombre, int numero, String clave, double saldo) async {
     final db = await database;
     await db.insert('CUENTAS', {
       'NOMBRE': nombre,
       'NUMERO': numero,
       'CLAVE': clave,
+      'SALDO': saldo,
     }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 }

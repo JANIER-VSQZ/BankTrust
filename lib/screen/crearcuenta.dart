@@ -17,53 +17,60 @@ class _CrearCuentaState extends State<CrearCuenta> {
   final TextEditingController nombreController = TextEditingController();
   final TextEditingController apellidoController = TextEditingController();
 
-  void crearCuenta() async {
-  String cuenta = cuentaController.text.trim();
-  String contrasena = contrasenaController.text.trim();
-  String nombre = nombreController.text.trim();
-  String apellido = apellidoController.text.trim();
+  String? tipoSeleccionado;
+  final Map<String, double> tiposCuenta = {
+    'Básica': 25000,
+    'Estudiante': 50000,
+    'Profesional': 75000,
+  };
 
-  if (cuenta.isNotEmpty &&
-      contrasena.isNotEmpty &&
-      nombre.isNotEmpty &&
-      apellido.isNotEmpty) {
-    try {
-      await DatabaseHelper().insertCuenta(
-        '$nombre $apellido',
-        int.parse(cuenta),
-        contrasena,
-      );
+  void crearCuenta() async {
+    String cuenta = cuentaController.text.trim();
+    String contrasena = contrasenaController.text.trim();
+    String nombre = nombreController.text.trim();
+    String apellido = apellidoController.text.trim();
+
+    if (cuenta.isNotEmpty &&
+        contrasena.isNotEmpty &&
+        nombre.isNotEmpty &&
+        apellido.isNotEmpty &&
+        tipoSeleccionado != null) {
+      try {
+        await DatabaseHelper().insertCuenta(
+          '$nombre $apellido',
+          int.parse(cuenta),
+          contrasena,
+          tiposCuenta[tipoSeleccionado]!, 
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Cuenta creada exitosamente')),
+        );
+        Navigator.pop(context);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al crear cuenta: $e')),
+        );
+      }
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cuenta creada exitosamente')),
-      );
-      Navigator.pop(context);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al crear cuenta: $e')),
+        const SnackBar(content: Text('Por favor complete todos los campos')),
       );
     }
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Por favor complete todos los campos')),
-    );
   }
-}
 
   @override
   Widget build(BuildContext context) {
-    
-
     return Scaffold(
-      backgroundColor: Color(0xFFFEF7FF),
+      backgroundColor: const Color(0xFFFEF7FF),
       appBar: AppBar(
         toolbarHeight: 120,
         title: Text(
           "Crear Cuenta",
-        style: GoogleFonts.poppins (fontSize: 30, color: Color(0xFF328535)),         
+          style: GoogleFonts.poppins(fontSize: 30, color: Color(0xFF328535)),
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Color(0xFFFEF7FF),
+        backgroundColor: const Color(0xFFFEF7FF),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -78,74 +85,48 @@ class _CrearCuentaState extends State<CrearCuenta> {
                   child: Text(
                     "Complete el formulario para registrarse",
                     style: GoogleFonts.dmSans(
-                  fontSize: 18, 
-                  color: Color(0xFF8F8E8E),
-                  ),
+                      fontSize: 18,
+                      color: Color(0xFF8F8E8E),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 40),
-                Text(
-                  "NÚMERO DE CUENTA",
-                  style: GoogleFonts.dmSans(fontSize: 20, color: Color(0xFF8F8E8E) ),
-                ),
-                const SizedBox(height: 5),
-                TextField(
-                  controller: cuentaController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: const InputDecoration(
-                    labelText: "Ingrese su número",
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Color(0xFFcce1c6),
-                  ),
-                ),
+                _buildLabel("NÚMERO DE CUENTA"),
+                _buildTextField(cuentaController, "Ingrese su número", isNumeric: true),
                 const SizedBox(height: 25),
-                Text(
-                  "CONTRASEÑA",
-                  style: GoogleFonts.dmSans(fontSize: 20, color: Color(0xFF8F8E8E) ),
-                ),
-                const SizedBox(height: 5),
-                TextField(
-                  controller: contrasenaController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: "Ingrese su contraseña",
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Color(0xFFcce1c6),
-                  ),
-                ),
+                _buildLabel("CONTRASEÑA"),
+                _buildTextField(contrasenaController, "Ingrese su contraseña", isPassword: true),
                 const SizedBox(height: 25),
-                Text(
-                  "NOMBRE",
-                  style: GoogleFonts.dmSans(fontSize: 20, color: Color(0xFF8F8E8E) ),
-                ),
-                const SizedBox(height: 5),
-                TextField(
-                  controller: nombreController,
-                  decoration: const InputDecoration(
-                    labelText: "Ingrese su nombre",
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Color(0xFFcce1c6),
-                  ),
-                ),
+                _buildLabel("NOMBRE"),
+                _buildTextField(nombreController, "Ingrese su nombre"),
                 const SizedBox(height: 25),
-                Text(
-                  "APELLIDO",
-                  style: GoogleFonts.dmSans(fontSize: 20, color: Color(0xFF8F8E8E) ),
-                ),
+                _buildLabel("APELLIDO"),
+                _buildTextField(apellidoController, "Ingrese su apellido"),
+                const SizedBox(height: 25),
+
+                _buildLabel("TIPO DE CUENTA"),
                 const SizedBox(height: 5),
-                TextField(
-                  controller: apellidoController,
+                DropdownButtonFormField<String>(
                   decoration: const InputDecoration(
-                    labelText: "Ingrese su apellido",
-                    border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color(0xFFcce1c6),
+                    border: OutlineInputBorder(),
                   ),
+                  value: tipoSeleccionado,
+                  hint: const Text("Seleccione un tipo"),
+                  onChanged: (value) {
+                    setState(() {
+                      tipoSeleccionado = value!;
+                    });
+                  },
+                  items: tiposCuenta.keys.map((tipo) {
+                    return DropdownMenuItem(
+                      value: tipo,
+                      child: Text(tipo),
+                    );
+                  }).toList(),
                 ),
+
                 const SizedBox(height: 40),
                 Center(
                   child: ElevatedButton(
@@ -154,10 +135,7 @@ class _CrearCuentaState extends State<CrearCuenta> {
                       backgroundColor: const Color(0xFF27662A),
                       foregroundColor: Colors.white,
                       textStyle: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                     ),
                     child: const Text("Crear Cuenta"),
                   ),
@@ -166,6 +144,29 @@ class _CrearCuentaState extends State<CrearCuenta> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildLabel(String text) {
+    return Text(
+      text,
+      style: GoogleFonts.dmSans(fontSize: 20, color: const Color(0xFF8F8E8E)),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label,
+      {bool isNumeric = false, bool isPassword = false}) {
+    return TextField(
+      controller: controller,
+      keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
+      obscureText: isPassword,
+      inputFormatters: isNumeric ? [FilteringTextInputFormatter.digitsOnly] : null,
+      decoration: InputDecoration(
+        labelText: label,
+        border: const OutlineInputBorder(),
+        filled: true,
+        fillColor: const Color(0xFFcce1c6),
       ),
     );
   }
