@@ -41,7 +41,7 @@ class _PagarserviciosState extends State<Pagarservicios> {
           children: [
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.only(top: 40, bottom: 10),
               color: const Color(0xFF328535),
               child: Center(
                 child: Text(

@@ -77,7 +77,7 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
         title: Text(
           "¿Clave olvidada?",
           style: GoogleFonts.poppins(
-            fontSize: 44,
+            fontSize: 30,
             color: const Color(0xFF328535),
           ), //i
           textAlign: TextAlign.center,

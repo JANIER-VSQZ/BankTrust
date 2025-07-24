@@ -46,7 +46,7 @@ class _CrearCuentaState extends State<CrearCuenta> {
         toolbarHeight: 120,
         title: Text(
           "Crear Cuenta",
- style: GoogleFonts.poppins (fontSize: 45, color: Color(0xFF328535)),         
+        style: GoogleFonts.poppins (fontSize: 30, color: Color(0xFF328535)),         
         ),
         centerTitle: true,
         elevation: 0,
