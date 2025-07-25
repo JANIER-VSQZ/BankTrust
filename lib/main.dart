@@ -71,6 +71,8 @@ class _IniciarSesionState extends State<IniciarSesion> {
         final usuario = Usuario(
           nombre: cuenta['NOMBRE']?.toString() ?? '',
           cuenta: cuenta['NUMERO']?.toString() ?? '',
+          saldo: (cuenta['SALDO'] as num?)?.toDouble() ?? 0.0,
+
         );
 
         Sesion.usuarioActual = usuario;

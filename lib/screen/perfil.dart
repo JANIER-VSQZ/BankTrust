@@ -92,7 +92,7 @@ class _PerfilState extends State<Perfil> {
               child: TextField(
                 enabled: false,
                 controller: TextEditingController(
-                  //text: 'L ${usuario.saldo.toStringAsFixed(2)}',
+                  text: 'L ${usuario.saldo.toStringAsFixed(2)}',
                 ),
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
