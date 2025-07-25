@@ -91,6 +91,21 @@ class DatabaseHelper {
     }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  Future<int?> getCuentaIdPorNumero(int numeroCuenta) async {
+    final db = await database;
+    final result = await db.query(
+      'CUENTAS',
+      where: 'NUMERO = ?',
+      whereArgs: [numeroCuenta],
+    );
+
+    if (result.isNotEmpty) {
+      return result.first['ID'] as int;
+    } else {
+      return null;
+    }
+  }
+
   Future<void> updateCuentaClave(int id, String clave) async {
     final db = await database;
     await db.update(
