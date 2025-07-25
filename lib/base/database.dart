@@ -1,6 +1,3 @@
-// lib/base/database_helper.dart
-import 'dart:ffi';
-
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -165,10 +162,59 @@ class DatabaseHelper {
 
   Future<void> insertPagos(int id_cuenta, int id_tipo, double monto) async {
     final db = await database;
-    await db.insert('CUENTAS', {
+    await db.insert('PAGOS', {
       'ID_CUENTA': id_cuenta,
       'ID_TIPO': id_tipo,
       'MONTO': monto,
     }, conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<void> insertTransFerencias(
+    int id_cuenta,
+    int id_cuenta_destino,
+    double monto,
+    String concepto,
+  ) async {
+    final db = await database;
+    await db.insert('TRANSFERENCIAS', {
+      'ID_CUENTA': id_cuenta,
+      'ID_CUENTA_DESTINO': id_cuenta_destino,
+      'MONTO': monto,
+      'CONCEPTO': concepto,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<double?> getSaldoActualPorIdCuenta(int idCuenta) async {
+    final db = await database;
+
+    final result = await db.rawQuery(
+      '''
+    SELECT SUM(SALDO) SALDO
+    FROM (
+      SELECT SALDO
+      FROM PAGOS
+      WHERE ID_CUENTA = ?
+      UNION ALL
+      SELECT -SUM(MONTO)
+      FROM TRANSFERENCIAS
+      WHERE ID_CUENTA = ?
+      UNION ALL
+      SELECT -SUM(MONTO)
+      FROM PAGOS
+      WHERE ID_CUENTA = ?
+      UNION ALL
+      SELECT SUM(MONTO)
+      FROM TRANSFERENCIAS
+      WHERE ID_CUENTA_DESTINO = ?
+      )
+  ''',
+      [idCuenta, idCuenta, idCuenta, idCuenta],
+    );
+
+    if (result.isNotEmpty && result.first['SALDO'] != null) {
+      return (result.first['SALDO'] as num).toDouble();
+    } else {
+      return 0.0;
+    }
   }
 }
