@@ -1,5 +1,4 @@
 // lib/base/database_helper.dart
-import 'dart:ffi';
 
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -59,6 +58,14 @@ class DatabaseHelper {
             MONTO NUMERIC(12,2)
           )
         ''');
+        await db.execute('''
+          INSERT INTO PAGOS_TIPOS
+          (
+            DESCRIPCION
+          )
+          VALUES
+          ('SANAA'), ('UNIVERSIDAD'), ('ENEE'), ('CABLE COLOR'), ('CLARO'), ('HONDUTEL'), ('TIGO');
+        ''');
       },
     );
   }
@@ -83,6 +90,21 @@ class DatabaseHelper {
     }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  Future<int?> getCuentaIdPorNumero(int numeroCuenta) async {
+    final db = await database;
+    final result = await db.query(
+      'CUENTAS',
+      where: 'NUMERO = ?',
+      whereArgs: [numeroCuenta],
+    );
+
+    if (result.isNotEmpty) {
+      return result.first['ID'] as int;
+    } else {
+      return null;
+    }
+  }
+
   Future<void> updateCuentaClave(int id, String clave) async {
     final db = await database;
     await db.update(
@@ -91,6 +113,52 @@ class DatabaseHelper {
       where: 'id = ?',
       whereArgs: [id],
       conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getTiposDePagos() async {
+    final db = await database;
+    return await db.query('PAGOS_TIPOS');
+  }
+
+  Future<List<Map<String, dynamic>>> obtenerTransferencias(int cuentaId) async {
+    final db = await database;
+
+    final result = await db.rawQuery(
+      '''
+    SELECT 
+      T.ID,
+      T.FECHA,
+      T.MONTO,
+      T.CONCEPTO,
+      T.ID_CUENTA,
+      T.ID_CUENTA_DESTINO,
+      C1.NUMERO AS NUMERO_ORIGEN,
+      C2.NUMERO AS NUMERO_DESTINO
+    FROM TRANSFERENCIAS T
+    JOIN CUENTAS C1 ON T.ID_CUENTA = C1.ID
+    JOIN CUENTAS C2 ON T.ID_CUENTA_DESTINO = C2.ID
+    WHERE T.ID_CUENTA = ? OR T.ID_CUENTA_DESTINO = ?
+    ORDER BY T.FECHA DESC
+  ''',
+      [cuentaId, cuentaId],
+    );
+
+    return result;
+  }
+
+  Future<List<Map<String, dynamic>>> obtenerPagos(int cuentaId) async {
+    final db = await database;
+
+    return await db.rawQuery(
+      '''
+    SELECT P.FECHA, P.MONTO, T.DESCRIPCION
+    FROM PAGOS P
+    JOIN PAGOS_TIPOS T ON P.ID_TIPO = T.ID
+    WHERE P.ID_CUENTA = ?
+    ORDER BY P.FECHA DESC
+  ''',
+      [cuentaId],
     );
   }
 }

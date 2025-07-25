@@ -37,20 +37,14 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
     }
 
     bool confirmado = await confirmarCambioContrasena(context);
-
     if (!confirmado) return;
 
     try {
-      final db = await DatabaseHelper().database;
+      final dbHelper = DatabaseHelper();
+      final idCuenta = await dbHelper.getCuentaIdPorNumero(int.parse(cuenta));
 
-      final updated = await db.update(
-        'CUENTAS',
-        {'CLAVE': nuevaClave},
-        where: 'NUMERO = ?',
-        whereArgs: [int.tryParse(cuenta)],
-      );
-
-      if (updated > 0) {
+      if (idCuenta != null) {
+        await dbHelper.updateCuentaClave(idCuenta, nuevaClave);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Contraseña cambiada exitosamente')),
         );
@@ -65,6 +59,7 @@ class _RecuperarContrasenaState extends State<RecuperarContrasena> {
         context,
       ).showSnackBar(SnackBar(content: Text('Error: $e')));
     }
+
     /*
     String cuenta = cuentaController.text;
     String contrasena = contrasenaController.text;
