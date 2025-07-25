@@ -59,6 +59,14 @@ class DatabaseHelper {
             MONTO NUMERIC(12,2)
           )
         ''');
+        await db.execute('''
+          INSERT INTO PAGOS_TIPOS
+          (
+            DESCRIPCION
+          )
+          VALUES
+          ('SANAA'), ('UNIVERSIDAD'), ('ENEE'), ('CABLE COLOR'), ('CLARO'), ('HONDUTEL'), ('TIGO');
+        ''');
       },
     );
   }
