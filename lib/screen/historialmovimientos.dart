@@ -1,12 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:banktrust/base/database.dart';
+import 'package:banktrust/sesion.dart';
+
+final usuario = Sesion.usuarioActual;
 
 class Transaccion {
   String tipo;
   double monto;
   String cuenta;
+  String fecha;
 
-  Transaccion({required this.tipo, required this.monto, required this.cuenta});
+  Transaccion({
+    required this.tipo,
+    required this.monto,
+    required this.cuenta,
+    required this.fecha,
+  });
+
+  // Para crear una transacción desde una fila de la base de datos
+  factory Transaccion.fromMap(Map<String, dynamic> map, String tipo) {
+    return Transaccion(
+      tipo: tipo,
+      monto: map['MONTO']?.toDouble() ?? 0.0,
+      cuenta: map.containsKey('NUMERO_DESTINO')
+          ? map['NUMERO_DESTINO'].toString()
+          : map['DESCRIPCION'] ?? 'N/A',
+      fecha: map['FECHA'] ?? 'Fecha no disponible',
+    );
+  }
 }
 
 class Historialmovimientos extends StatefulWidget {
@@ -19,29 +41,32 @@ enum Opcion { transferencias, pagos, nada }
 
 class HistorialmovimientosState extends State<Historialmovimientos> {
   Opcion _seleccion = Opcion.nada;
+  List<Transaccion> _transaccion = [];
 
-  final List<Transaccion> _transaccion = [
-    Transaccion(tipo: "PAGO", monto: 12000, cuenta: "ENEE"),
-    Transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
-    Transaccion(tipo: "PAGO", monto: 12000, cuenta: "ENEE"),
-    Transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
-    Transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
-    Transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
-    Transaccion(tipo: "PAGO", monto: 12000, cuenta: "ENEE"),
-    Transaccion(tipo: "PAGO", monto: 12000, cuenta: "ENEE"),
-    Transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
-    Transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
-    Transaccion(tipo: "PAGO", monto: 12000, cuenta: "ENEE"),
-    Transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
-    Transaccion(tipo: "PAGO", monto: 12000, cuenta: "ENEE"),
-    Transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
-    Transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
-    Transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
-    Transaccion(tipo: "PAGO", monto: 12000, cuenta: "ENEE"),
-    Transaccion(tipo: "PAGO", monto: 12000, cuenta: "ENEE"),
-    Transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
-    Transaccion(tipo: "TRANSFERENCIA", monto: 13000, cuenta: "123456789"),
-  ];
+  Future<void> cargarTransacciones() async {
+    final dbHelper = DatabaseHelper();
+    int cuentaInt= int.parse(usuario!.cuenta);
+    List<Transaccion> resultado = [];
+
+    if (_seleccion == Opcion.transferencias) {
+      final data = await dbHelper.obtenerTransferencias(
+        cuentaInt,
+      );
+      resultado = data
+          .map((mapa) => Transaccion.fromMap(mapa, 'TRANSFERENCIA'))
+          .toList();
+    } else if (_seleccion == Opcion.pagos) {
+      final data = await dbHelper.obtenerPagos(cuentaInt);
+      resultado = data
+          .map((mapa) => Transaccion.fromMap(mapa, 'PAGO'))
+          .toList();
+    }
+
+    setState(() {
+      _transaccion = resultado;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,8 +152,8 @@ class HistorialmovimientosState extends State<Historialmovimientos> {
               SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  "06/06/25. 13:34:21\n${t.tipo} exitoso! Usted ha Pagado: L.${t.monto}\na la cuenta: ${t.cuenta}",
-                ),
+                      "${t.fecha}\n${t.tipo} exitoso! Usted ha ${t.tipo == "PAGO" ? "Pagado" : "Transferido"}: L.${t.monto}\na la cuenta: ${t.cuenta}",
+                    ),
               ),
             ],
           ),

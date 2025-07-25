@@ -1,3 +1,6 @@
+// lib/base/database_helper.dart
+import 'dart:ffi';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -117,14 +120,5 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> getTiposDePagos() async {
     final db = await database;
     return await db.query('PAGOS_TIPOS');
-  }
-
-  Future<void> insertPagos(int id_cuenta, int id_tipo, double saldo) async {
-    final db = await database;
-    await db.insert('PAGOS', {
-      'ID_CUENTA': id_cuenta,
-      'ID_TIPO': id_tipo,
-      'MONTO': saldo,
-    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 }
