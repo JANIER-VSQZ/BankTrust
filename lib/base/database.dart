@@ -163,4 +163,12 @@ class DatabaseHelper {
     );
   }
 
+  Future<void> insertPagos(int id_cuenta, int id_tipo, double monto) async {
+    final db = await database;
+    await db.insert('CUENTAS', {
+      'ID_CUENTA': id_cuenta,
+      'ID_TIPO': id_tipo,
+      'MONTO': monto,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
+  }
 }
