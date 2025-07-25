@@ -116,4 +116,9 @@ class DatabaseHelper {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
+
+  Future<List<Map<String, dynamic>>> getTiposDePagos() async {
+    final db = await database;
+    return await db.query('PAGOS_TIPOS');
+  }
 }
