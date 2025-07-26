@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
+import 'package:banktrust/base/database.dart';
+import 'package:banktrust/sesion.dart';
 
 class Pagarservicios extends StatefulWidget {
   const Pagarservicios({super.key});
@@ -9,14 +11,15 @@ class Pagarservicios extends StatefulWidget {
   _PagarserviciosState createState() => _PagarserviciosState();
 }
 
+
+
 class _PagarserviciosState extends State<Pagarservicios> {
-  final List<String> _opciones = [
-    'Agua',
-    'Luz',
-    'Internet',
-    'Seguro Medico',
-    'Seguro Vehicular',
-  ];
+  final usuario = Sesion.usuarioActual;
+  late TextEditingController cuentaOrigen = TextEditingController(
+    text: usuario?.cuenta.toString(),
+  );
+  List<Map<String, dynamic>> _opciones = [];
+  Map<int, String> _mapaTipos = {};
 
   final TextEditingController cantpagarController = TextEditingController();
   String? _seleccion;
@@ -25,6 +28,7 @@ class _PagarserviciosState extends State<Pagarservicios> {
   void initState() {
     super.initState();
     cantpagarController.addListener(() => setState(() {}));
+    cargarTiposDePagos();
   }
 
   @override
@@ -81,7 +85,7 @@ class _PagarserviciosState extends State<Pagarservicios> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               child: TextField(
-                controller: TextEditingController(text: '123'),
+                controller: cuentaOrigen,
                 decoration: const InputDecoration(
                   enabled: false,
                   labelText: "123",
@@ -120,23 +124,28 @@ class _PagarserviciosState extends State<Pagarservicios> {
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: Colors.black, width: 1),
                       ),
-                      child: DropdownButton<String>(
+                      child: DropdownButton<int>(
                         isExpanded: true,
                         hint: const Text("Elija una opción"),
                         iconEnabledColor: Colors.white,
                         underline: const SizedBox(),
                         dropdownColor: const Color(0xFFcce1c6),
-                        value: _seleccion,
+                        value: _seleccion != null
+                            ? _opciones.firstWhere(
+                                (e) => e['DESCRIPCION'] == _seleccion,
+                              )['ID']
+                            : null,
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        items: _opciones.map((String valor) {
-                          return DropdownMenuItem<String>(
-                            value: valor,
-                            child: Text(valor),
+                        items: _opciones.map((tipo) {
+                          return DropdownMenuItem<int>(
+                            value: tipo['ID'],
+                            child: Text(tipo['DESCRIPCION']),
                           );
                         }).toList(),
-                        onChanged: (String? nuevoValor) {
+                        onChanged: (int? nuevoIdTipo) {
                           setState(() {
-                            _seleccion = nuevoValor;
+                            _seleccion =
+                                _mapaTipos[nuevoIdTipo]; // guarda el nombre si quieres
                             cantpagarController.clear();
                           });
                         },
@@ -221,6 +230,31 @@ class _PagarserviciosState extends State<Pagarservicios> {
   Future<void> mtdTransferencia() async {
     bool confirmado = await mtdConfirmarDatos(context);
     if (confirmado) {
+      // Asumimos que la cuenta es "123" fija
+      int cuentaInt = usuario!.idCuenta;
+
+      // Obtener el id_tipo según la opción seleccionada
+      int idTipo = _mapaTipos.entries
+          .firstWhere((entry) => entry.value == _seleccion)
+          .key; // Suponiendo que empieza desde 1
+
+      // Convertir el monto a double
+      double monto =
+          double.tryParse(cantpagarController.text.replaceAll(',', '.')) ?? 0;
+
+      if (monto > usuario!.saldo) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No cuenta con fondos suficientes')),
+        );
+        setState(() {
+          cantpagarController.clear();
+          _seleccion = null;
+        });
+        return;
+      } else {
+        await DatabaseHelper().insertPagos(cuentaInt, idTipo, monto);
+        await DatabaseHelper().actualizarSaldo(cuentaInt, monto);
+      }
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Pago realizado con éxito')));
@@ -233,6 +267,20 @@ class _PagarserviciosState extends State<Pagarservicios> {
         context,
       ).showSnackBar(const SnackBar(content: Text('Pago cancelado')));
     }
+  }
+
+  Future<void> cargarTiposDePagos() async {
+    final tipos = await DatabaseHelper().getTiposDePagos();
+    setState(() {
+      _opciones = tipos;
+      for (var tipo in tipos) {
+        final id = tipo['ID'];
+        final nombre = tipo['DESCRIPCION'];
+        if (id != null && nombre != null) {
+          _mapaTipos[id as int] = nombre as String;
+        }
+      }
+    });
   }
 }
 
