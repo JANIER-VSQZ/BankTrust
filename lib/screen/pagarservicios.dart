@@ -1,3 +1,4 @@
+import 'package:banktrust/models/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
@@ -254,6 +255,7 @@ class _PagarserviciosState extends State<Pagarservicios> {
       } else {
         await DatabaseHelper().insertPagos(cuentaInt, idTipo, monto);
         await DatabaseHelper().actualizarSaldo(cuentaInt, monto);
+        actualizarUsuario();
       }
       ScaffoldMessenger.of(
         context,
@@ -281,6 +283,27 @@ class _PagarserviciosState extends State<Pagarservicios> {
         }
       }
     });
+  }
+
+  Future<void> actualizarUsuario() async{
+    final db = await DatabaseHelper().database;
+    final result = await db.query(
+      'CUENTAS',
+      where: 'ID = ?',
+      whereArgs: [usuario!.idCuenta]
+    );
+    if(result.isNotEmpty){
+      final cuenta = result.first;
+      final _usuario = Usuario(
+          idCuenta: (cuenta['ID'] as num?)?.toInt() ?? 0,
+          nombre: cuenta['NOMBRE']?.toString() ?? '',
+          cuenta: cuenta['NUMERO']?.toString() ?? '',
+          saldo: (cuenta['SALDO'] as num?)?.toDouble() ?? 0.0,
+
+        );
+
+        Sesion.usuarioActual=_usuario;
+    }
   }
 }
 
