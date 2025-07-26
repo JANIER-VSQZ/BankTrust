@@ -83,14 +83,16 @@ class _TransferenciasState extends State<Transferencias> {
           int? vrIdCuentaDestino = await dbHelper.getCuentaIdPorNumero(vrNumeroCuentaDestino); //busscando el ID del número de cuenta de destino
           double vrMonto = double.parse(monto.text); //trayendo el monto desde la casilla
           String vrConcepto = concepto.text.toString(); //trayendo el concepto desde la casilla
- 
+
+          // mtdMessage(context, 'idCuenta = $vrIdCuenta, idCuentaDestino = $vrIdCuentaDestino, Monto = $vrMonto, Concepto = $vrConcepto ');
+
           if (vrIdCuenta != null) {
             await dbHelper.insertTransferencias(vrIdCuenta, vrIdCuentaDestino, vrMonto, vrConcepto); //realizando el envío de la transferencia hacia la base de datos
             
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('La transferencia ha sido realizada de forma exitosa')),
-            );
-            Navigator.pop(context);
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   const SnackBar(content: Text('La transferencia ha sido realizada de forma exitosa')),
+            // );
+            // Navigator.pop(context);
 
           } else {
             ScaffoldMessenger.of(
@@ -441,4 +443,26 @@ Future<bool> mtdOtraTransferencia(BuildContext context) async {
         ),
       ) ??
       false; // Retorna false si el usuario cierra el diálogo sin elegir
+}
+
+void mtdMessage(BuildContext context, String vrText) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Mensaje'),
+        content: SingleChildScrollView(
+          child: Text(vrText),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
 }
