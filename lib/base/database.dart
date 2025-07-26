@@ -22,7 +22,7 @@ class DatabaseHelper {
       path,
       version: 1, 
       onCreate: (db, version) async {//PARA PODER TENER EL AVATAR AL AZAR EN EL PERFIL SE OCUPA GUARDAR ESE CAMPO EN LA BASE
-        await db.execute('''/
+        await db.execute('''
           CREATE TABLE CUENTAS(
             ID INTEGER PRIMARY KEY AUTOINCREMENT,
             NUMERO INTEGER,
@@ -169,19 +169,19 @@ class DatabaseHelper {
     }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<void> insertTransFerencias(
-    int id_cuenta,
-    int id_cuenta_destino,
-    double monto,
-    String concepto,
+  Future<void> insertTransferencias(
+    int? vrIdCuenta,
+    int? vrIdCuentaDestino,
+    double vrMonto,
+    String vrConcepto,
   ) async {
     final db = await database;
     await db.insert('TRANSFERENCIAS', {
-      'ID_CUENTA': id_cuenta,
-      'ID_CUENTA_DESTINO': id_cuenta_destino,
-      'MONTO': monto,
-      'CONCEPTO': concepto,
-    }, conflictAlgorithm: ConflictAlgorithm.replace);
+      'ID_CUENTA': vrIdCuenta,
+      'ID_CUENTA_DESTINO': vrIdCuentaDestino,
+      'MONTO': vrMonto,
+      'CONCEPTO': vrConcepto,
+    });
   }
 
   Future<double?> getSaldoActualPorIdCuenta(int idCuenta) async {

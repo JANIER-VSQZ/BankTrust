@@ -18,7 +18,7 @@ class _BarraMenuState extends State<Barramenu> {
 
   final List<Widget> _paginas = [
     Pagarservicios(),
-    Transferencias(cuenta: "123"),
+    Transferencias(),
     Perfil(),
     Historialmovimientos(),
   ];

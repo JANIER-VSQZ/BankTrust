@@ -4,11 +4,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 // import 'package:banktrust/screen/historialmovimientos.dart';
 import 'package:banktrust/screen/Barramenu.dart';
+import 'package:banktrust/base/database.dart';
+import 'package:banktrust/sesion.dart';
+
+final usuario = Sesion.usuarioActual;
 
 class Transferencias extends StatefulWidget {
-  final String cuenta;
+  // final String cuenta;
 
-  const Transferencias({super.key, required this.cuenta});
+  const Transferencias({super.key});
 
   @override
   State<Transferencias> createState() => _TransferenciasState();
@@ -19,7 +23,7 @@ class _TransferenciasState extends State<Transferencias> {
   // int _paginaActual = 1;
 
   late TextEditingController cuentaOrigen = TextEditingController(
-    text: widget.cuenta,
+    text: usuario?.cuenta.toString(),
   );
   late TextEditingController cuentaDestino = TextEditingController();
   late TextEditingController monto = TextEditingController();
@@ -68,9 +72,40 @@ class _TransferenciasState extends State<Transferencias> {
       bool confirmado = await mtdConfirmarDatos(context);
 
       if (confirmado) {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   const SnackBar(content: Text('La transferencia ha sido exitosa!')),
-        // );
+        
+        
+
+        try {
+          final dbHelper = DatabaseHelper(); //instanciando la base de datos
+          int vrNumeroCuentaOrigen = int.parse(cuentaOrigen.text); //tomando el número de cuenta desde el parámetro reicibo al hacer el llamado a esta pantalla
+          int vrNumeroCuentaDestino = int.parse(cuentaDestino.text); //tomando el número de la casilla donde se escribió el número de destino
+          int? vrIdCuenta = await dbHelper.getCuentaIdPorNumero(vrNumeroCuentaOrigen); //busscando el ID del número de cuenta del usuarioa actual
+          int? vrIdCuentaDestino = await dbHelper.getCuentaIdPorNumero(vrNumeroCuentaDestino); //busscando el ID del número de cuenta de destino
+          double vrMonto = double.parse(monto.text); //trayendo el monto desde la casilla
+          String vrConcepto = concepto.text.toString(); //trayendo el concepto desde la casilla
+ 
+          if (vrIdCuenta != null) {
+            await dbHelper.insertTransferencias(vrIdCuenta, vrIdCuentaDestino, vrMonto, vrConcepto); //realizando el envío de la transferencia hacia la base de datos
+            
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('La transferencia ha sido realizada de forma exitosa')),
+            );
+            Navigator.pop(context);
+
+          } else {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('Hubo un error al buscar la cuenta de origen')));
+          }
+        } catch (e) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Error: $e')));
+        }
+
+
+
+
 
         confirmado = await mtdOtraTransferencia(context);
         if (confirmado) {
