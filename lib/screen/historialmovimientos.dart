@@ -3,8 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:banktrust/base/database.dart';
 import 'package:banktrust/sesion.dart';
 
-final usuario = Sesion.usuarioActual;
-
 class Transaccion {
   String tipo;
   double monto;
@@ -17,8 +15,6 @@ class Transaccion {
     required this.cuenta,
     required this.fecha,
   });
-
-  // Para crear una transacción desde una fila de la base de datos
   factory Transaccion.fromMap(Map<String, dynamic> map, String tipo) {
     return Transaccion(
       tipo: tipo,
@@ -40,23 +36,23 @@ class Historialmovimientos extends StatefulWidget {
 enum Opcion { transferencias, pagos, nada }
 
 class HistorialmovimientosState extends State<Historialmovimientos> {
+  final usuario = Sesion.usuarioActual;
   Opcion _seleccion = Opcion.nada;
   List<Transaccion> _transaccion = [];
 
   Future<void> cargarTransacciones() async {
     final dbHelper = DatabaseHelper();
-    int cuentaInt= int.parse(usuario!.cuenta);
+    int cuentaInt = usuario!.idCuenta;
     List<Transaccion> resultado = [];
 
     if (_seleccion == Opcion.transferencias) {
-      final data = await dbHelper.obtenerTransferencias(
-        cuentaInt,
-      );
+      final data = await dbHelper.obtenerTransferencias(cuentaInt);
       resultado = data
           .map((mapa) => Transaccion.fromMap(mapa, 'TRANSFERENCIA'))
           .toList();
     } else if (_seleccion == Opcion.pagos) {
       final data = await dbHelper.obtenerPagos(cuentaInt);
+      print(data);
       resultado = data
           .map((mapa) => Transaccion.fromMap(mapa, 'PAGO'))
           .toList();
@@ -65,6 +61,7 @@ class HistorialmovimientosState extends State<Historialmovimientos> {
     setState(() {
       _transaccion = resultado;
     });
+    print("resultado $resultado");
   }
 
   @override
@@ -152,8 +149,8 @@ class HistorialmovimientosState extends State<Historialmovimientos> {
               SizedBox(width: 10),
               Expanded(
                 child: Text(
-                      "${t.fecha}\n${t.tipo} exitoso! Usted ha ${t.tipo == "PAGO" ? "Pagado" : "Transferido"}: L.${t.monto}\na la cuenta: ${t.cuenta}",
-                    ),
+                  "${t.fecha}\n${t.tipo} exitoso! Usted ha ${t.tipo == "PAGO" ? "Pagado" : "Transferido"}: L.${t.monto}\na la cuenta: ${t.cuenta}",
+                ),
               ),
             ],
           ),
@@ -186,7 +183,9 @@ class HistorialmovimientosState extends State<Historialmovimientos> {
         onChanged: (Opcion? nuevoValor) {
           setState(() {
             _seleccion = nuevoValor!;
+            _transaccion.clear(); // Limpia mientras carga
           });
+          cargarTransacciones(); // Carga desde BD
         },
       ),
     );

@@ -20,8 +20,9 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 1, 
-      onCreate: (db, version) async {//PARA PODER TENER EL AVATAR AL AZAR EN EL PERFIL SE OCUPA GUARDAR ESE CAMPO EN LA BASE
+      version: 1,
+      onCreate: (db, version) async {
+        //PARA PODER TENER EL AVATAR AL AZAR EN EL PERFIL SE OCUPA GUARDAR ESE CAMPO EN LA BASE
         await db.execute('''
           CREATE TABLE CUENTAS(
             ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -216,5 +217,13 @@ class DatabaseHelper {
     } else {
       return 0.0;
     }
+  }
+
+  Future<void> actualizarSaldo(int idCuenta, double monto) async {
+    final db = await database;
+    await db.rawUpdate(
+      'UPDATE CUENTAS SET SALDO = SALDO - ? WHERE ID = ?',
+      [monto, idCuenta],
+    );
   }
 }
