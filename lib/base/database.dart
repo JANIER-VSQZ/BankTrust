@@ -20,9 +20,9 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 1,
-      onCreate: (db, version) async {
-        await db.execute('''
+      version: 1, 
+      onCreate: (db, version) async {//PARA PODER TENER EL AVATAR AL AZAR EN EL PERFIL SE OCUPA GUARDAR ESE CAMPO EN LA BASE
+        await db.execute('''/
           CREATE TABLE CUENTAS(
             ID INTEGER PRIMARY KEY AUTOINCREMENT,
             NUMERO INTEGER,
