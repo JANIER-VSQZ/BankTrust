@@ -29,7 +29,8 @@ class DatabaseHelper {
             NUMERO INTEGER,
             CLAVE VARCHAR(50),
             NOMBRE VARCHAR(50),
-            SALDO NUMERIC(12,2)
+            SALDO NUMERIC(12,2),
+            IMAGEN TEXT
           )
         ''');
         await db.execute('''
