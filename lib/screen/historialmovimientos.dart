@@ -6,23 +6,29 @@ import 'package:banktrust/sesion.dart';
 class Transaccion {
   String tipo;
   double monto;
-  String cuenta;
+  String cuentaDestino;
+  String cuentaOrigen;
   String fecha;
+  String concepto;
 
   Transaccion({
     required this.tipo,
     required this.monto,
-    required this.cuenta,
+    required this.cuentaDestino,
+    required this.cuentaOrigen,
     required this.fecha,
+    required this.concepto,
   });
   factory Transaccion.fromMap(Map<String, dynamic> map, String tipo) {
     return Transaccion(
       tipo: tipo,
       monto: map['MONTO']?.toDouble() ?? 0.0,
-      cuenta: map.containsKey('NUMERO_DESTINO')
+      cuentaDestino: map.containsKey('NUMERO_DESTINO')
           ? map['NUMERO_DESTINO'].toString()
           : map['DESCRIPCION'] ?? 'N/A',
       fecha: map['FECHA'] ?? 'Fecha no disponible',
+      concepto: map['CONCEPTO'] ?? 'N/A',
+      cuentaOrigen: map['NUMERO_ORIGEN'].toString()
     );
   }
 }
@@ -149,7 +155,7 @@ class HistorialmovimientosState extends State<Historialmovimientos> {
               SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  "${t.fecha}\n${t.tipo} exitoso! Usted ha ${t.tipo == "PAGO" ? "Pagado" : "Transferido"}: L.${t.monto}\na la cuenta: ${t.cuenta}",
+                  mensaje(t)
                 ),
               ),
             ],
@@ -157,6 +163,19 @@ class HistorialmovimientosState extends State<Historialmovimientos> {
         );
       },
     );
+  }
+
+  String mensaje(t){
+    if(_seleccion==Opcion.pagos){
+      return "${t.fecha}\n${t.tipo} exitoso! Usted ha pagado: L.${t.monto}\na la cuenta: ${t.cuentaDestino}";
+    }else if(_seleccion==Opcion.transferencias){
+      if(usuario!.cuenta==t.cuentaDestino){
+        return "${t.fecha}\n${t.tipo} exitosa! Usted ha recibido: L.${t.monto}\nde la cuenta: ${t.cuentaOrigen}\nConcepto: ${t.concepto}";
+      }else{
+        return "${t.fecha}\n${t.tipo} exitosa! Usted ha transferido: L.${t.monto}\na la cuenta: ${t.cuentaDestino}\nConcepto: ${t.concepto}";
+      }
+    }
+    return "Por favor, seleccione una opcion.";
   }
 
   Widget radio(var opc) {
