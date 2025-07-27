@@ -36,20 +36,34 @@ class _CrearCuentaState extends State<CrearCuenta> {
         apellido.isNotEmpty &&
         tipoSeleccionado != null) {
       try {
+        int numeroCuenta = int.parse(cuenta);
+
+        final idExistente = await DatabaseHelper().getCuentaIdPorNumero(
+          numeroCuenta,
+        );
+        if (idExistente != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Ya existe una cuenta con ese número'),
+            ),
+          );
+          return;
+        }
         await DatabaseHelper().insertCuenta(
           '$nombre $apellido',
-          int.parse(cuenta),
+          numeroCuenta,
           contrasena,
-          tiposCuenta[tipoSeleccionado]!, 
+          tiposCuenta[tipoSeleccionado]!,
         );
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Cuenta creada exitosamente')),
         );
         Navigator.pop(context);
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al crear cuenta: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error al crear cuenta: $e')));
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -92,10 +106,18 @@ class _CrearCuentaState extends State<CrearCuenta> {
                 ),
                 const SizedBox(height: 40),
                 _buildLabel("NÚMERO DE CUENTA"),
-                _buildTextField(cuentaController, "Ingrese su número", isNumeric: true),
+                _buildTextField(
+                  cuentaController,
+                  "Ingrese su número",
+                  isNumeric: true,
+                ),
                 const SizedBox(height: 25),
                 _buildLabel("CONTRASEÑA"),
-                _buildTextField(contrasenaController, "Ingrese su contraseña", isPassword: true),
+                _buildTextField(
+                  contrasenaController,
+                  "Ingrese su contraseña",
+                  isPassword: true,
+                ),
                 const SizedBox(height: 25),
                 _buildLabel("NOMBRE"),
                 _buildTextField(nombreController, "Ingrese su nombre"),
@@ -120,10 +142,7 @@ class _CrearCuentaState extends State<CrearCuenta> {
                     });
                   },
                   items: tiposCuenta.keys.map((tipo) {
-                    return DropdownMenuItem(
-                      value: tipo,
-                      child: Text(tipo),
-                    );
+                    return DropdownMenuItem(value: tipo, child: Text(tipo));
                   }).toList(),
                 ),
 
@@ -134,8 +153,14 @@ class _CrearCuentaState extends State<CrearCuenta> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF27662A),
                       foregroundColor: Colors.white,
-                      textStyle: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700),
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      textStyle: GoogleFonts.poppins(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
                     ),
                     child: const Text("Crear Cuenta"),
                   ),
@@ -155,13 +180,19 @@ class _CrearCuentaState extends State<CrearCuenta> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label,
-      {bool isNumeric = false, bool isPassword = false}) {
+  Widget _buildTextField(
+    TextEditingController controller,
+    String label, {
+    bool isNumeric = false,
+    bool isPassword = false,
+  }) {
     return TextField(
       controller: controller,
       keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
       obscureText: isPassword,
-      inputFormatters: isNumeric ? [FilteringTextInputFormatter.digitsOnly] : null,
+      inputFormatters: isNumeric
+          ? [FilteringTextInputFormatter.digitsOnly]
+          : null,
       decoration: InputDecoration(
         labelText: label,
         border: const OutlineInputBorder(),
