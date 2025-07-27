@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-// import 'package:banktrust/screen/historialmovimientos.dart';
 import 'package:banktrust/screen/Barramenu.dart';
 import 'package:banktrust/base/database.dart';
 import 'package:banktrust/sesion.dart';
-
-final usuario = Sesion.usuarioActual;
+import 'package:banktrust/models/usuario.dart';
 
 class Transferencias extends StatefulWidget {
-  // final String cuenta;
-
   const Transferencias({super.key});
 
   @override
@@ -19,6 +15,8 @@ class Transferencias extends StatefulWidget {
 }
 
 class _TransferenciasState extends State<Transferencias> {
+  final usuario = Sesion.usuarioActual;
+  
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
   // int _paginaActual = 1;
 
@@ -40,7 +38,7 @@ class _TransferenciasState extends State<Transferencias> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       focusCuentaDestino.requestFocus();
       final navBarState = _bottomNavigationKey.currentState;
-      navBarState?.setPage(1); // or any other index you want
+      navBarState?.setPage(1); 
     });
   }
 
@@ -72,55 +70,58 @@ class _TransferenciasState extends State<Transferencias> {
       bool confirmado = await mtdConfirmarDatos(context);
 
       if (confirmado) {
-        
-        
-
         try {
           final dbHelper = DatabaseHelper(); //instanciando la base de datos
-          int vrNumeroCuentaOrigen = int.parse(cuentaOrigen.text); //tomando el número de cuenta desde el parámetro reicibo al hacer el llamado a esta pantalla
           int vrNumeroCuentaDestino = int.parse(cuentaDestino.text); //tomando el número de la casilla donde se escribió el número de destino
-          int? vrIdCuenta = await dbHelper.getCuentaIdPorNumero(vrNumeroCuentaOrigen); //busscando el ID del número de cuenta del usuarioa actual
           int? vrIdCuentaDestino = await dbHelper.getCuentaIdPorNumero(vrNumeroCuentaDestino); //busscando el ID del número de cuenta de destino
-          double vrMonto = double.parse(monto.text); //trayendo el monto desde la casilla
-          String vrConcepto = concepto.text.toString(); //trayendo el concepto desde la casilla
 
-          // mtdMessage(context, 'idCuenta = $vrIdCuenta, idCuentaDestino = $vrIdCuentaDestino, Monto = $vrMonto, Concepto = $vrConcepto ');
-
-          if (vrIdCuenta != null) {
-            await dbHelper.insertTransferencias(vrIdCuenta, vrIdCuentaDestino, vrMonto, vrConcepto); //realizando el envío de la transferencia hacia la base de datos
+          if(vrIdCuentaDestino != null)
+          {
+            int vrNumeroCuentaOrigen = int.parse(cuentaOrigen.text); //tomando el número de cuenta desde el parámetro reicibo al hacer el llamado a esta pantalla
+            int? vrIdCuenta = await dbHelper.getCuentaIdPorNumero(vrNumeroCuentaOrigen); //busscando el ID del número de cuenta del usuarioa actual
             
-            // ScaffoldMessenger.of(context).showSnackBar(
-            //   const SnackBar(content: Text('La transferencia ha sido realizada de forma exitosa')),
-            // );
-            // Navigator.pop(context);
+            if(vrIdCuentaDestino != vrIdCuenta)
+            {
+              double vrMonto = double.parse(monto.text); //trayendo el monto desde la casilla
+              String vrConcepto = concepto.text.toString(); //trayendo el concepto desde la casilla
+              // int vrId = int.parse(vrIdCuenta.toString());
+              // double? vrSaldo = await dbHelper.getSaldoActualPorIdCuenta(vrId); //método para obtener el saldo actual
+              double? vrSaldo = usuario?.saldo;
 
+              if (vrSaldo! >= vrMonto) {
+                if (vrIdCuenta != null) {
+                  await dbHelper.insertTransferencias(vrIdCuenta, vrIdCuentaDestino, vrMonto, vrConcepto); //realizando el envío de la transferencia hacia la base de datos
+                  actualizarUsuario();
+                  confirmado = await mtdOtraTransferencia(context);
+                  
+                  if (confirmado) {
+                    mtdLimpiarCampos();
+                  } else {
+                    Future.delayed(const Duration(seconds: 0), () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Barramenu()),
+                      ); //r
+                    });
+                  }
+                } else {
+                  mtdMessage(context, 'Hubo un error al buscar la cuenta de origen');
+                }
+              } else {
+                mtdMessage(context, 'Estimado usuario la cuenta origen no tiene suficiente saldo para realizar esta acción: \n Saldo actual: $vrSaldo \n Monto transferencia: $vrMonto');
+              }
+            } else {
+              mtdMessage(context, 'La cuenta origen no puede ser la misma que la cuenta destino');
+            }
+            
           } else {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text('Hubo un error al buscar la cuenta de origen')));
+            mtdMessage(context, 'El número de cuenta escrito no existe en el catálogo de cuentas bancarias');
           }
         } catch (e) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text('Error: $e')));
         }
-
-
-
-
-
-        confirmado = await mtdOtraTransferencia(context);
-        if (confirmado) {
-          mtdLimpiarCampos();
-        } else {
-          Future.delayed(const Duration(seconds: 0), () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Barramenu()),
-            ); //r
-          });
-        }
-
         // Navigator.pop(context);
       } else {
         // Usuario canceló
@@ -137,6 +138,27 @@ class _TransferenciasState extends State<Transferencias> {
     concepto.clear();
 
     FocusScope.of(context).requestFocus(focusCuentaDestino);
+  }
+
+  Future<void> actualizarUsuario() async{
+    final db = await DatabaseHelper().database;
+    final result = await db.query(
+      'CUENTAS',
+      where: 'ID = ?',
+      whereArgs: [usuario!.idCuenta]
+    );
+    if(result.isNotEmpty){
+      final cuenta = result.first;
+      final _usuario = Usuario(
+          idCuenta: (cuenta['ID'] as num?)?.toInt() ?? 0,
+          nombre: cuenta['NOMBRE']?.toString() ?? '',
+          cuenta: cuenta['NUMERO']?.toString() ?? '',
+          saldo: (cuenta['SALDO'] as num?)?.toDouble() ?? 0.0,
+
+        );
+
+        Sesion.usuarioActual=_usuario;
+    }
   }
 
   @override
@@ -466,3 +488,5 @@ void mtdMessage(BuildContext context, String vrText) {
     },
   );
 }
+
+  

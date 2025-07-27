@@ -183,6 +183,9 @@ class DatabaseHelper {
       'MONTO': vrMonto,
       'CONCEPTO': vrConcepto,
     });
+
+    actualizarSaldo(int.parse(vrIdCuenta.toString()), vrMonto);
+    actualizarSaldo(int.parse(vrIdCuentaDestino.toString()), -vrMonto);
   }
 
   Future<double?> getSaldoActualPorIdCuenta(int idCuenta) async {
@@ -193,8 +196,8 @@ class DatabaseHelper {
     SELECT SUM(SALDO) SALDO
     FROM (
       SELECT SALDO
-      FROM PAGOS
-      WHERE ID_CUENTA = ?
+      FROM CUENTAS
+      WHERE ID = ?
       UNION ALL
       SELECT -SUM(MONTO)
       FROM TRANSFERENCIAS
